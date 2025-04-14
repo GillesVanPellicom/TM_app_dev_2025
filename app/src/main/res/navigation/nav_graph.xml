@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.movietracker.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_films_and_series"
+        android:name="com.example.movietracker.FilmsAndSeriesFragment"
+        android:label="Films &amp; Series"
+        tools:layout="@layout/fragment_films_and_series" />
+
+    <fragment
+        android:id="@+id/nav_liked"
+        android:name="com.example.movietracker.LikedFragment"
+        android:label="Liked"
+        tools:layout="@layout/fragment_liked" />
+</navigation>

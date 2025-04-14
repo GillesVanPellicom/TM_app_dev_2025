@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="d_background">#000000</color>
+    <color name="d_background_secondary">#121212</color>
+
+    <!-- Primary and Secondary Colors -->
+    <color name="d_primary_blue">#4338CA</color>
+    <color name="d_secondary_blue">#666699</color>
+
+    <!-- Button States -->
+    <color name="d_button_background">#4338CA</color>
+    <color name="d_button_text">#FFFFFF</color>
+    <color name="d_button_border">#D1D5DB</color>
+    <color name="d_button_background_selected">#776FD8</color>
+    <color name="d_button_text_selected">#FFFFFF</color>
+    <color name="d_button_border_selected">#D1D5DB</color>
+
+    <!-- Icon and Text Colors -->
+    <color name="d_icon">#D1D5DB</color>
+    <color name="d_icon_selected">#776FD8</color>
+    <color name="d_text_primary">#FFFFFF</color>
+    <color name="d_text_secondary">#D1D5DB</color>
+
+    <!-- Hyperlink -->
+    <color name="d_hyperlink_color">#776FD8</color>
+
+    <!-- Error / Warning Colors -->
+    <color name="d_error">#EF4444</color>
+    <color name="d_warn">#F59E0B</color>
+
+    <!-- Dividers and Borders -->
+    <color name="d_div">#4B5563</color>
+</resources>

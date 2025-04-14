@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.MovieTracker.dark" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/d_primary_blue</item>
+        <item name="colorPrimaryDark">@color/d_background_secondary</item>
+        <item name="colorAccent">@color/d_hyperlink_color</item>
+        <item name="android:windowBackground">@color/d_background</item>
+        <item name="android:colorBackground">@color/d_background</item>
+        <item name="colorSurface">@color/d_background_secondary</item>
+        <item name="android:textColorSecondary">@color/d_text_secondary</item>
+        <item name="elevationOverlayEnabled">false</item>
+    </style>
+</resources>
