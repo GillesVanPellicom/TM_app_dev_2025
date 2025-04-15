@@ -63,7 +63,7 @@ fun setMoneyText(view: TextView, amount: Int?) {
 @BindingAdapter("taglineText")
 fun setTaglineText(view: TextView, tagline: String?) {
     if (!tagline.isNullOrEmpty()) {
-        view.text = "Tagline: $tagline"
+        view.text = "\"$tagline\""
         view.visibility = View.VISIBLE
     } else {
         view.visibility = View.GONE
