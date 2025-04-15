@@ -23,6 +23,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlin.inc
 
 class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
     private lateinit var binding: FragmentFilmsAndSeriesBinding
@@ -45,6 +46,7 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (!isLoading && layoutManager.findLastVisibleItemPosition() == movies.size - 1) {
+                    binding.progressBar.visibility = View.VISIBLE // Show the progress bar
                     currentPage++
                     fetchTrendingMovies(currentPage)
                 }
