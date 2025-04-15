@@ -1,0 +1,10 @@
+<resources>
+    <attr name="colorBrandPrimary" format="color" />
+    <attr name="colorOnBrandPrimary" format="color" />
+    <attr name="colorBrandPrimaryContainer" format="color" />
+    <attr name="colorOnBrandPrimaryContainer" format="color" />
+    <attr name="colorBrandSecondary" format="color" />
+    <attr name="colorOnBrandSecondary" format="color" />
+    <attr name="colorBrandSecondaryContainer" format="color" />
+    <attr name="colorOnBrandSecondaryContainer" format="color" />
+</resources>

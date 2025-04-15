@@ -6,6 +6,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
+
         <!-- RecyclerView for list of items -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -14,18 +16,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floating_action_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:contentDescription="Add movie"
-            app:srcCompat="@drawable/ic_add"
-            app:backgroundTint="@color/d_button_background"
-            app:tint="@color/d_text_secondary"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
 

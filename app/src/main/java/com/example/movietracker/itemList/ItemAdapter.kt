@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.movietracker.R
 
 class ItemAdapter(private val items: List<Item>) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
@@ -23,9 +24,11 @@ class ItemAdapter(private val items: List<Item>) : RecyclerView.Adapter<ItemAdap
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val item = items[position]
-        holder.imageView.setImageResource(item.imageResId) // Set image
-        holder.title.text = item.title // Set title
-        holder.subtitle.text = item.subTitle // Set subtitle
+        Glide.with(holder.imageView.context)
+            .load(item.imageUrl)
+            .into(holder.imageView)
+        holder.title.text = item.title
+        holder.subtitle.text = item.subTitle
     }
 
     override fun getItemCount(): Int = items.size

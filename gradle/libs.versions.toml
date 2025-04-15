@@ -13,10 +13,16 @@ appcompat = "1.7.0"
 navigation = "2.8.9"
 
 # Compose
-composeBom = "2024.09.00"
+composeBom = "2025.04.00"
 
 # UI
 cardview = "1.0.0"
+material = "1.11.0"
+
+
+# DB
+retrofit = "2.9.0"
+gson = "2.9.0"
 
 # Testing
 junit = "4.13.2"
@@ -43,11 +49,18 @@ androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3"}
 
 # UI
-androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
+material3 = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
+# DB
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "gson" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version = "4.10.0" }
+glide = { group = "com.github.bumptech.glide", name = "glide", version = "4.15.1" }
+glide-compiler = { group = "com.github.bumptech.glide", name = "compiler", version = "4.15.1" }
 # Testing
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxJunit" }

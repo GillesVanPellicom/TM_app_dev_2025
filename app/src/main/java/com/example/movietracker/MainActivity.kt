@@ -25,12 +25,12 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
+        // Handle top padding to take system bar into account
         ViewCompat.setOnApplyWindowInsetsListener(binding.navHostFragment) { view, insets ->
             val systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             view.updatePadding(
                 top = systemBarsInsets.top,
             )
-
             insets
         }
 
