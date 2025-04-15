@@ -20,6 +20,44 @@
         app:defaultNavHost="true"
         app:navGraph="@navigation/nav_graph" />
 
+    <!-- Reload on error button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/reloadButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:drawableTop="@drawable/ic_reload"
+        android:text="Reload"
+        android:visibility="gone"
+        android:gravity="center"
+        style="?attr/materialButtonOutlinedStyle"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Dimmed background with ProgressBar -->
+    <FrameLayout
+        android:id="@+id/progressBarContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#80000000"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:layout_gravity="center" />
+
+    </FrameLayout>
+
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"
         android:layout_width="0dp"

@@ -24,9 +24,27 @@ import retrofit2.converter.gson.GsonConverterFactory
 class InspectMovieFragment : Fragment(R.layout.fragment_inspect_movie) {
     private lateinit var binding: FragmentInspectMovieBinding
 
+    private fun showLoadingSpinner() {
+        (requireActivity() as? MainActivity)?.showLoadingSpinner()
+    }
+
+    private fun hideLoadingSpinner() {
+        (requireActivity() as? MainActivity)?.hideLoadingSpinner()
+    }
+
+    private fun showReloadButton() {
+        (requireActivity() as? MainActivity)?.showReloadButton()
+    }
+
+    private fun hideReloadButton() {
+        (requireActivity() as? MainActivity)?.hideReloadButton()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentInspectMovieBinding.bind(view)
+
+
 
         // Handle back button click
         binding.topAppBar.setNavigationOnClickListener {
@@ -36,11 +54,19 @@ class InspectMovieFragment : Fragment(R.layout.fragment_inspect_movie) {
 
         // Get movie ID from arguments
         val id = arguments?.getInt("id") ?: -1
-        Log.d("InspectMovieFragment", "Movie ID: $id")
+
+        // Setup reload button behavior
+        (requireActivity() as? MainActivity)?.setupRetryButton((requireActivity() as MainActivity).binding.reloadButton) {
+            fetchMovieDetails(id)
+        }
+
         fetchMovieDetails(id)
+
     }
 
     private fun fetchMovieDetails(movieId: Int) {
+        showLoadingSpinner()
+
         val apiKey = "140b81b85e8e8baf9d417e99a3c9ab7e"
         val service = Retrofit.Builder()
             .baseUrl("https://api.themoviedb.org/3/")
@@ -50,17 +76,19 @@ class InspectMovieFragment : Fragment(R.layout.fragment_inspect_movie) {
 
         service.getMovie(movieId, apiKey).enqueue(object : Callback<MovieResponse> {
             override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
+                hideLoadingSpinner()
                 if (response.isSuccessful) {
                     val movie = response.body()
                     Log.d("InspectMovieFragment", "Response: ${response.body()}")
                     Log.d("InspectMovieFragment", "Response Code: ${response.code()}")
                     binding.textViewMovieId.text = movie?.title
-                } else {
-                    Log.d("InspectMovieFragment", "Error: ${response.errorBody()?.string()}")
                 }
             }
 
             override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
+                hideLoadingSpinner()
+                showReloadButton()
+
                 val dialog = Dialog(requireContext(), android.R.style.Theme_Material_Dialog)
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
                 dialog.setCancelable(true)

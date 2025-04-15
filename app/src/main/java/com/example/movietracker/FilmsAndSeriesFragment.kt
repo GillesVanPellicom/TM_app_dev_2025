@@ -31,9 +31,32 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
     private var currentPage = 1
     private var isLoading = false
 
+    private fun showLoadingSpinner() {
+        (requireActivity() as? MainActivity)?.showLoadingSpinner()
+        isLoading = true
+    }
+
+    private fun hideLoadingSpinner() {
+        (requireActivity() as? MainActivity)?.hideLoadingSpinner()
+        isLoading = false
+    }
+
+    private fun showReloadButton() {
+        (requireActivity() as? MainActivity)?.showReloadButton()
+    }
+
+    private fun hideReloadButton() {
+        (requireActivity() as? MainActivity)?.hideReloadButton()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentFilmsAndSeriesBinding.bind(view)
+
+        // Setup reload button behavior
+        (requireActivity() as? MainActivity)?.setupRetryButton((requireActivity() as MainActivity).binding.reloadButton) {
+            fetchTrendingMovies(currentPage)
+        }
 
         // Setup RecyclerView
         val layoutManager = LinearLayoutManager(context)
@@ -52,7 +75,7 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (!isLoading && layoutManager.findLastVisibleItemPosition() == movies.size - 1) {
-                    binding.progressBarContainer.visibility = View.VISIBLE // Show the progress bar
+                    showLoadingSpinner()
                     currentPage++
                     fetchTrendingMovies(currentPage)
                 }
@@ -64,8 +87,7 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
     }
 
     private fun fetchTrendingMovies(page: Int) {
-        isLoading = true
-        binding.progressBarContainer.visibility = View.VISIBLE // Show the progress bar
+        showLoadingSpinner()
 
         val apiKey = "140b81b85e8e8baf9d417e99a3c9ab7e"
         val service = Retrofit.Builder()
@@ -79,7 +101,7 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
                 call: Call<TrendingResponse>,
                 response: Response<TrendingResponse>
             ) {
-                binding.progressBarContainer.visibility = View.GONE // Hide the progress bar
+                hideLoadingSpinner()
                 if (response.isSuccessful) {
                     val newMovies = response.body()?.results?.map {
                         Item(
@@ -97,22 +119,11 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
                         newMovies.size
                     )
                 }
-                isLoading = false
             }
 
             override fun onFailure(call: Call<TrendingResponse>, t: Throwable) {
-                binding.progressBarContainer.visibility = View.GONE // Hide the progress bar
-                isLoading = false
-
-                // Show the retry button
-                binding.retryButton.visibility = View.VISIBLE
-
-                // Set up click listener for retry button
-                binding.retryButton.setOnClickListener {
-                    binding.retryButton.visibility = View.GONE // Hide the button
-                    binding.progressBarContainer.visibility = View.VISIBLE // Show the progress bar
-                    fetchTrendingMovies(currentPage) // Retry loading
-                }
+                hideLoadingSpinner()
+                showReloadButton()
 
                 val dialog = Dialog(requireContext(), android.R.style.Theme_Material_Dialog)
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
