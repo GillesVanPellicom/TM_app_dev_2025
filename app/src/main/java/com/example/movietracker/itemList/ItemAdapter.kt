@@ -9,26 +9,30 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.movietracker.R
 
-class ItemAdapter(private val items: List<Item>) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
+class ItemAdapter(
+    private val items: List<Item>,
+    private val onItemClick: (Item) -> Unit
+) : RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
 
-    class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val imageView: ImageView = view.findViewById(R.id.item_image)
-        val title: TextView = view.findViewById(R.id.item_title)
-        val subtitle: TextView = view.findViewById(R.id.item_subtitle)
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val title: TextView = itemView.findViewById(R.id.item_title)
+        val image: ImageView = itemView.findViewById(R.id.item_image)
+
+        fun bind(item: Item) {
+            title.text = item.title
+            Glide.with(itemView.context).load(item.imageUrl).into(image)
+            itemView.setOnClickListener { onItemClick(item) }
+        }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_list, parent, false)
-        return ItemViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_list, parent, false)
+        return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val item = items[position]
-        Glide.with(holder.imageView.context)
-            .load(item.imageUrl)
-            .into(holder.imageView)
-        holder.title.text = item.title
-        holder.subtitle.text = item.subTitle
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(items[position])
     }
 
     override fun getItemCount(): Int = items.size

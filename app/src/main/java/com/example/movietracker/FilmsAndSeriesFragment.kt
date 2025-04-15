@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movietracker.api.TmdbService
 import com.example.movietracker.api.TrendingResponse
@@ -37,7 +38,13 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
         // Setup RecyclerView
         val layoutManager = LinearLayoutManager(context)
         binding.recyclerView.layoutManager = layoutManager
-        val adapter = ItemAdapter(movies)
+        val adapter = ItemAdapter(movies) { selectedItem ->
+            // Navigate to InspectMovieFragment with the selected movie's ID
+            val bundle = Bundle().apply {
+                putInt("id", selectedItem.id)
+            }
+            findNavController().navigate(R.id.action_inspect_movie, bundle)
+        }
         binding.recyclerView.adapter = adapter
 
         // Add scroll listener for infinite scrolling
@@ -129,7 +136,8 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
                 dialogView.findViewById<TextView>(R.id.dialog_title).text = "An issue occurred"
                 dialogView.findViewById<TextView>(R.id.dialog_message).text =
                     "Something went wrong while loading.\nThis could be due to a network issue.\nPlease check your internet connection, and if the problem persists, \nplease try again later."
-                dialogView.findViewById<ImageView>(R.id.dialog_icon).setImageResource(R.drawable.ic_error)
+                dialogView.findViewById<ImageView>(R.id.dialog_icon)
+                    .setImageResource(R.drawable.ic_error)
                 dialogView.findViewById<Button>(R.id.dialog_button_ok).setOnClickListener {
                     dialog.dismiss()
                 }

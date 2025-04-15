@@ -7,6 +7,7 @@ coreKtx = "1.16.0"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.10.1"
 fragmentKtx = "1.8.6"
+navigationFragment = "2.8.9"
 appcompat = "1.7.0"
 
 # Navigation
@@ -17,7 +18,7 @@ composeBom = "2025.04.00"
 
 # UI
 cardview = "1.0.0"
-material = "1.11.0"
+material = "1.12.0"
 
 
 # DB
@@ -26,19 +27,19 @@ gson = "2.9.0"
 
 # Testing
 junit = "4.13.2"
-androidxJunit = "1.1.5"
-espressoCore = "3.5.1"
+androidxJunit = "1.2.1"
+espressoCore = "3.6.1"
 
 [libraries]
 # AndroidX Core
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
-androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtx" }
+androidx-navigation-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtx" }
+androidx-navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragment" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 
 # Navigation
-androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }
 
 # Compose (BOM-managed, no versions)
