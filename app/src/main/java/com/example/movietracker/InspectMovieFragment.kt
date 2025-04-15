@@ -11,10 +11,13 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.movietracker.api.MovieResponse
 import com.example.movietracker.api.TmdbService
 import com.example.movietracker.databinding.FragmentInspectMovieBinding
+import com.google.android.material.tabs.TabLayoutMediator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -23,6 +26,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class InspectMovieFragment : Fragment(R.layout.fragment_inspect_movie) {
     private lateinit var binding: FragmentInspectMovieBinding
+    private val viewModel: MovieViewModel by viewModels()
 
     private fun showLoadingSpinner() {
         (requireActivity() as? MainActivity)?.showLoadingSpinner()
@@ -44,24 +48,35 @@ class InspectMovieFragment : Fragment(R.layout.fragment_inspect_movie) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentInspectMovieBinding.bind(view)
 
-
-
         // Handle back button click
         binding.topAppBar.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
-//        binding.topAppBar.setTitle()
 
-        // Get movie ID from arguments
+        // Set up ViewPager and TabLayout
+        val adapter = TabAdapter(this)
+        binding.viewPager.adapter = adapter
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            tab.text = when (position) {
+                0 -> "Overview"
+                1 -> "Details"
+                else -> null
+            }
+        }.attach()
+
+        // Get movie ID and fetch details
         val id = arguments?.getInt("id") ?: -1
-
-        // Setup reload button behavior
+        Log.d("InspectMovieFragment", "Movie ID: $id")
         (requireActivity() as? MainActivity)?.setupRetryButton((requireActivity() as MainActivity).binding.reloadButton) {
             fetchMovieDetails(id)
         }
 
         fetchMovieDetails(id)
 
+        // Observe movie data
+        viewModel.movie.observe(viewLifecycleOwner) { movie ->
+            binding.movie = movie
+        }
     }
 
     private fun fetchMovieDetails(movieId: Int) {
@@ -81,7 +96,9 @@ class InspectMovieFragment : Fragment(R.layout.fragment_inspect_movie) {
                     val movie = response.body()
                     Log.d("InspectMovieFragment", "Response: ${response.body()}")
                     Log.d("InspectMovieFragment", "Response Code: ${response.code()}")
-                    binding.textViewMovieId.text = movie?.title
+                    movie?.let {
+                        viewModel.setMovie(it)
+                    }
                 }
             }
 
@@ -93,21 +110,18 @@ class InspectMovieFragment : Fragment(R.layout.fragment_inspect_movie) {
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
                 dialog.setCancelable(true)
 
-                // Set full-screen layout parameters
                 dialog.window?.setLayout(
                     WindowManager.LayoutParams.MATCH_PARENT,
                     WindowManager.LayoutParams.MATCH_PARENT
                 )
                 dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-                // Inflate a layout for Material 3 dialog content
                 val dialogView = LayoutInflater.from(requireContext()).inflate(
                     R.layout.dialog_fullscreen_error,
                     null
                 )
                 dialog.setContentView(dialogView)
 
-                // Configure views
                 dialogView.findViewById<TextView>(R.id.dialog_title).text = "An issue occurred"
                 dialogView.findViewById<TextView>(R.id.dialog_message).text =
                     "Something went wrong while loading.\nThis could be due to a network issue.\nPlease check your internet connection, and if the problem persists, \nplease try again later."
@@ -120,5 +134,17 @@ class InspectMovieFragment : Fragment(R.layout.fragment_inspect_movie) {
                 dialog.show()
             }
         })
+    }
+
+    private inner class TabAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
+        override fun getItemCount(): Int = 2
+
+        override fun createFragment(position: Int): Fragment {
+            return when (position) {
+                0 -> MovieOverviewFragment()
+                1 -> MovieDetailsFragment()
+                else -> throw IllegalStateException("Invalid position")
+            }
+        }
     }
 }

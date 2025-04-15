@@ -1,0 +1,176 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="movie"
+            type="com.example.movietracker.api.MovieResponse" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Tagline -->
+            <TextView
+                android:id="@+id/taglineText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:taglineText="@{movie.tagline}"
+                android:textAppearance="?attr/textAppearanceBody1" />
+
+            <!-- Status -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/status"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/statusText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{movie.status}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="8dp" />
+
+            <!-- Original Language -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/original_language"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/originalLanguageText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{movie.originalLanguage}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="8dp" />
+
+            <!-- Original Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/original_title"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/originalTitleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{movie.originalTitle}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="8dp" />
+
+            <!-- Adult -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/adult"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/adultText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{movie.adult ? `Yes` : `No`}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="8dp" />
+
+            <!-- Collection -->
+<!--            <TextView-->
+<!--                android:id="@+id/collectionText"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@{movie.belongsToCollection != null ? `Collection: ` + movie.belongsToCollection.name : ``}"-->
+<!--                android:textAppearance="?attr/textAppearanceBody1"-->
+<!--                android:visibility="@{movie.belongsToCollection != null ? View.VISIBLE : View.GONE}"-->
+<!--                android:layout_marginTop="16dp" />-->
+
+            <!-- Homepage -->
+            <TextView
+                android:id="@+id/homepageText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{`Homepage: ` + movie.homepage}"
+                android:autoLink="web"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:visibility="@{movie.homepage != null ? View.VISIBLE : View.GONE}"
+                android:layout_marginTop="16dp" />
+
+            <!-- IMDb ID -->
+            <TextView
+                android:id="@+id/imdbText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{`IMDb: https://www.imdb.com/title/` + movie.imdbId}"
+                android:autoLink="web"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:visibility="@{movie.imdbId != null ? View.VISIBLE : View.GONE}"
+                android:layout_marginTop="16dp" />
+
+            <!-- Production Companies -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/production_companies"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/companiesText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:companiesText="@{movie.productionCompanies}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="8dp" />
+
+            <!-- Production Countries -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/production_countries"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/countriesText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:countriesText="@{movie.productionCountries}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="8dp" />
+
+            <!-- Budget -->
+            <TextView
+                android:id="@+id/budgetText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:moneyText="@{movie.budget}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="16dp" />
+
+            <!-- Revenue -->
+            <TextView
+                android:id="@+id/revenueText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:moneyText="@{movie.revenue}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="16dp" />
+        </LinearLayout>
+    </ScrollView>
+</layout>

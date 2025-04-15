@@ -1,0 +1,100 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="movie"
+            type="com.example.movietracker.api.MovieResponse" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Plot Summary -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/plot_summary"
+                android:textAppearance="?attr/textAppearanceHeadline6" />
+
+            <TextView
+                android:id="@+id/overviewText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{movie.overview}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="8dp" />
+
+            <!-- Release Date -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/release_date"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/releaseDateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{movie.releaseDate}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="8dp" />
+
+            <!-- Genres -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/genres"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/genresText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:genresText="@{movie.genres}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="8dp" />
+
+            <!-- Runtime -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/runtime"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/runtimeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:runtimeText="@{movie.runtime}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="8dp" />
+
+            <!-- Spoken Languages -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/spoken_languages"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/languagesText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:languagesText="@{movie.spokenLanguages}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+    </ScrollView>
+</layout>
