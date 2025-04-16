@@ -16,10 +16,12 @@ class ItemAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title: TextView = itemView.findViewById(R.id.item_title)
+        val subTitle: TextView = itemView.findViewById(R.id.item_subtitle)
         val image: ImageView = itemView.findViewById(R.id.item_image)
 
         fun bind(item: Item) {
             title.text = item.title
+            subTitle.text = item.subTitle
             Glide.with(itemView.context).load(item.imageUrl).into(image)
             itemView.setOnClickListener { onItemClick(item) }
         }
