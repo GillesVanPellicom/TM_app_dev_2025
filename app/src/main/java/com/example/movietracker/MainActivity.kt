@@ -9,6 +9,8 @@ import androidx.core.view.updatePadding
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import androidx.room.Room
+import com.example.movietracker.database.AppDatabase
 import com.example.movietracker.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -16,8 +18,19 @@ class MainActivity : AppCompatActivity() {
     internal lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
 
+    companion object {
+        lateinit var database: AppDatabase
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        database = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java,
+            "app-database"
+        ).build()
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

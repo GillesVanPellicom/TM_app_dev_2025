@@ -76,10 +76,15 @@ dependencies {
     implementation(libs.retrofit.gson)
     implementation(libs.okhttp)
 
+    // DB
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    kapt(libs.room.compiler)
+
     // Glide (image loading)
     implementation(libs.glide)
     implementation(libs.androidx.navigation.fragment)
-    kapt(libs.glide.compiler)
+//    kapt(libs.glide.compiler)
 
     // Testing
     testImplementation(libs.junit)

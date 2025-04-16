@@ -18,6 +18,13 @@ interface TmdbService {
         @Path("movie_id") movieId: Int,
         @Query("api_key") apiKey: String
     ): Call<MovieResponse>
+
+    @GET("search/multi")
+    fun searchMoviesOrShows(
+        @Query("api_key") apiKey: String,
+        @Query("query") query: String,
+        @Query("page") page: Int
+    ): Call<TrendingResponse>
 }
 
 data class TrendingResponse(
@@ -32,14 +39,15 @@ data class TmdbTrendingListItem(
     @SerializedName("poster_path") val posterPath: String?,
     @SerializedName("release_date") val movieReleaseDate: String?,
     @SerializedName("first_air_date") val tvReleaseDate: String?,
+    @SerializedName("media_type") val mediaType: String?
 
-    ) {
+) {
     val releaseDate: String?
         get() = movieReleaseDate ?: tvReleaseDate
 
     val formattedReleaseInfo: String?
         get() {
-            return movieReleaseDate?.take(4) ?: tvReleaseDate?.take(4)
+            return if (mediaType == "movie") movieReleaseDate?.take(4) else tvReleaseDate?.take(4)
         }
 }
 

@@ -64,7 +64,7 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
         val adapter = ItemAdapter(movies) { selectedItem ->
             // Navigate to InspectMovieFragment with the selected movie's ID
             val bundle = Bundle().apply {
-                putInt("id", selectedItem.id)
+                putInt("id", selectedItem.tmbdId)
             }
             findNavController().navigate(R.id.action_inspect_movie, bundle)
         }
@@ -105,10 +105,11 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
                 if (response.isSuccessful) {
                     val newMovies = response.body()?.results?.map {
                         Item(
-                            id = it.id,
+                            tmbdId = it.id,
                             title = it.title ?: it.name.orEmpty(),
                             subTitle = it.formattedReleaseInfo ?: "Release info unavailable",
-                            imageUrl = "https://image.tmdb.org/t/p/w500${it.posterPath}"
+                            imageUrl = "https://image.tmdb.org/t/p/w500${it.posterPath}",
+                            isFilm = it.mediaType == "movie"
                         )
                     } ?: emptyList()
 

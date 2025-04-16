@@ -4,4 +4,8 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">28dp</item>
     </style>
+    <style name="Widget.MaterialComponents.ShapeableImageView.Rounded" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
 </resources>

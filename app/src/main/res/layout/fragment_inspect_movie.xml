@@ -12,24 +12,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- AppBar with Toolbar -->
+        <!-- AppBar -->
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/topAppBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:navigationIcon="@drawable/ic_arrow_back"
-                app:layout_scrollFlags="scroll|enterAlways" />
+                app:navigationIcon="@drawable/ic_arrow_back" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <!-- Scrollable Content -->
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="16dp"
             android:clipToPadding="false"
+            android:paddingBottom="16dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
@@ -55,8 +55,8 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_marginStart="16dp"
+                        android:layout_weight="1"
                         android:orientation="vertical">
 
                         <TextView
@@ -71,17 +71,17 @@
                             android:id="@+id/releaseYearText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
                             android:text="@{movie.releaseDate != null ? movie.releaseDate.substring(0, 4) : ``}"
-                            android:textAppearance="?attr/textAppearanceBody1"
-                            android:layout_marginTop="4dp" />
+                            android:textAppearance="?attr/textAppearanceBody1" />
 
                         <TextView
                             android:id="@+id/ratingText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
                             android:text="@{String.format(`%.1f/10 (%d votes)`, movie.voteAverage, movie.voteCount)}"
-                            android:textAppearance="?attr/textAppearanceBody1"
-                            android:layout_marginTop="4dp" />
+                            android:textAppearance="?attr/textAppearanceBody1" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -102,13 +102,13 @@
 
         <!-- Floating Action Button -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabLiked"
+            android:id="@+id/fabLikedMovie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
             android:layout_margin="16dp"
-            app:srcCompat="@drawable/ic_liked"
-            android:contentDescription="Add to liked" />
+            android:contentDescription="Add to liked"
+            app:srcCompat="@drawable/ic_liked" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

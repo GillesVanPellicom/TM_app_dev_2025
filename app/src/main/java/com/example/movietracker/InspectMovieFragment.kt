@@ -12,12 +12,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.movietracker.api.MovieResponse
 import com.example.movietracker.api.TmdbService
 import com.example.movietracker.databinding.FragmentInspectMovieBinding
+import com.example.movietracker.itemList.Item
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -76,6 +79,50 @@ class InspectMovieFragment : Fragment(R.layout.fragment_inspect_movie) {
         // Observe movie data
         viewModel.movie.observe(viewLifecycleOwner) { movie ->
             binding.movie = movie
+            checkIfMovieIsLiked(movie?.id)
+        }
+
+        // Add movie to database when FAB is clicked
+        binding.fabLikedMovie.setOnClickListener {
+            val movie = viewModel.movie.value
+            if (movie != null) {
+                lifecycleScope.launch {
+                    val items = MainActivity.database.itemDao().getItemsByType(isFilm = true)
+                    val existingItem = items.find { it.tmbdId == movie.id }
+
+                    if (existingItem != null) {
+                        // Remove the movie from the database
+                        MainActivity.database.itemDao().delete(existingItem)
+                        Log.d("InspectMovieFragment", "Movie removed from database: $existingItem")
+                        binding.fabLikedMovie.setImageResource(R.drawable.ic_liked)
+                    } else {
+                        // Add the movie to the database
+                        val item = Item(
+                            tmbdId = movie.id,
+                            imageUrl = "https://image.tmdb.org/t/p/w500${movie.posterPath}",
+                            title = movie.title ?: "Unknown Title",
+                            subTitle = movie.overview ?: "No Description",
+                            isFilm = true
+                        )
+                        MainActivity.database.itemDao().insert(item)
+                        Log.d("InspectMovieFragment", "Movie added to database: $item")
+                        binding.fabLikedMovie.setImageResource(R.drawable.ic_liked_filled)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun checkIfMovieIsLiked(movieId: Int?) {
+        if (movieId == null) return
+        lifecycleScope.launch {
+            val items = MainActivity.database.itemDao().getItemsByType(isFilm = true)
+            val isLiked = items.any { it.tmbdId == movieId }
+            if (isLiked) {
+                binding.fabLikedMovie.setImageResource(R.drawable.ic_liked_filled)
+            } else {
+                binding.fabLikedMovie.setImageResource(R.drawable.ic_liked)
+            }
         }
     }
 
@@ -92,6 +139,7 @@ class InspectMovieFragment : Fragment(R.layout.fragment_inspect_movie) {
         service.getMovie(movieId, apiKey).enqueue(object : Callback<MovieResponse> {
             override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
                 hideLoadingSpinner()
+                if (!isAdded) return // Ensure the fragment is still attached
                 if (response.isSuccessful) {
                     val movie = response.body()
                     Log.d("InspectMovieFragment", "Response: ${response.body()}")
@@ -105,6 +153,8 @@ class InspectMovieFragment : Fragment(R.layout.fragment_inspect_movie) {
             override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
                 hideLoadingSpinner()
                 showReloadButton()
+
+                if (!isAdded) return // Ensure the fragment is still attached
 
                 val dialog = Dialog(requireContext(), android.R.style.Theme_Material_Dialog)
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
