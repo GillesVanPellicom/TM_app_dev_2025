@@ -1,4 +1,4 @@
-package com.example.movietracker
+package com.example.movietracker.fragment.filmsAndSeries
 
 import android.app.Dialog
 import android.os.Bundle
@@ -14,9 +14,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.movietracker.MainActivity
+import com.example.movietracker.R
 import com.example.movietracker.api.TmdbService
 import com.example.movietracker.databinding.FragmentFilmsAndSeriesBinding
-import com.example.movietracker.itemList.Item
 import com.example.movietracker.itemList.ItemAdapter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

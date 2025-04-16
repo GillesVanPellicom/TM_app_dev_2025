@@ -1,4 +1,4 @@
-package com.example.movietracker
+package com.example.movietracker.fragment.inspectMovie
 
 import android.app.Dialog
 import android.os.Bundle
@@ -15,6 +15,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.movietracker.MainActivity
+import com.example.movietracker.R
 import com.example.movietracker.api.MovieResponse
 import com.example.movietracker.api.TmdbService
 import com.example.movietracker.databinding.FragmentInspectMovieBinding
@@ -30,22 +32,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 class InspectMovieFragment : Fragment(R.layout.fragment_inspect_movie) {
     private lateinit var binding: FragmentInspectMovieBinding
     private val viewModel: MovieViewModel by viewModels()
-
-    private fun showLoadingSpinner() {
-        (requireActivity() as? MainActivity)?.showLoadingSpinner()
-    }
-
-    private fun hideLoadingSpinner() {
-        (requireActivity() as? MainActivity)?.hideLoadingSpinner()
-    }
-
-    private fun showReloadButton() {
-        (requireActivity() as? MainActivity)?.showReloadButton()
-    }
-
-    private fun hideReloadButton() {
-        (requireActivity() as? MainActivity)?.hideReloadButton()
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -87,12 +73,13 @@ class InspectMovieFragment : Fragment(R.layout.fragment_inspect_movie) {
             val movie = viewModel.movie.value
             if (movie != null) {
                 lifecycleScope.launch {
-                    val items = MainActivity.database.itemDao().getItemsByType(isFilm = true)
+                    val items =
+                        MainActivity.Companion.database.itemDao().getItemsByType(isFilm = true)
                     val existingItem = items.find { it.tmbdId == movie.id }
 
                     if (existingItem != null) {
                         // Remove the movie from the database
-                        MainActivity.database.itemDao().delete(existingItem)
+                        MainActivity.Companion.database.itemDao().delete(existingItem)
                         Log.d("InspectMovieFragment", "Movie removed from database: $existingItem")
                         binding.fabLikedMovie.setImageResource(R.drawable.ic_liked)
                     } else {
@@ -104,7 +91,7 @@ class InspectMovieFragment : Fragment(R.layout.fragment_inspect_movie) {
                             subTitle = movie.releaseDate?.take(4) ?: "Error",
                             isFilm = true
                         )
-                        MainActivity.database.itemDao().insert(item)
+                        MainActivity.Companion.database.itemDao().insert(item)
                         Log.d("InspectMovieFragment", "Movie added to database: $item")
                         binding.fabLikedMovie.setImageResource(R.drawable.ic_liked_filled)
                     }
@@ -116,7 +103,7 @@ class InspectMovieFragment : Fragment(R.layout.fragment_inspect_movie) {
     private fun checkIfMovieIsLiked(movieId: Int?) {
         if (movieId == null) return
         lifecycleScope.launch {
-            val items = MainActivity.database.itemDao().getItemsByType(isFilm = true)
+            val items = MainActivity.Companion.database.itemDao().getItemsByType(isFilm = true)
             val isLiked = items.any { it.tmbdId == movieId }
             if (isLiked) {
                 binding.fabLikedMovie.setImageResource(R.drawable.ic_liked_filled)
@@ -196,5 +183,21 @@ class InspectMovieFragment : Fragment(R.layout.fragment_inspect_movie) {
                 else -> throw IllegalStateException("Invalid position")
             }
         }
+    }
+
+    private fun showLoadingSpinner() {
+        (requireActivity() as? MainActivity)?.showLoadingSpinner()
+    }
+
+    private fun hideLoadingSpinner() {
+        (requireActivity() as? MainActivity)?.hideLoadingSpinner()
+    }
+
+    private fun showReloadButton() {
+        (requireActivity() as? MainActivity)?.showReloadButton()
+    }
+
+    private fun hideReloadButton() {
+        (requireActivity() as? MainActivity)?.hideReloadButton()
     }
 }

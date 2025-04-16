@@ -1,4 +1,4 @@
-package com.example.movietracker
+package com.example.movietracker.fragment.filmsAndSeries
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -1,4 +1,4 @@
-package com.example.movietracker
+package com.example.movietracker.fragment.inspectMovie
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

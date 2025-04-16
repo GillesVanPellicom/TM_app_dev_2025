@@ -1,15 +1,10 @@
-package com.example.movietracker
+package com.example.movietracker.fragment.liked
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.movietracker.R
 import com.example.movietracker.databinding.FragmentLikedBinding
-import com.example.movietracker.itemList.Item
-import com.example.movietracker.itemList.ItemAdapter
 
 class LikedFragment : Fragment(R.layout.fragment_liked) {
     private lateinit var binding: FragmentLikedBinding

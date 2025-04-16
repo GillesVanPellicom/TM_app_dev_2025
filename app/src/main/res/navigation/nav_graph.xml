@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.movietracker.HomeFragment"
+        android:name="com.example.movietracker.fragment.home.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_films_and_series"
-        android:name="com.example.movietracker.FilmsAndSeriesFragment"
+        android:name="com.example.movietracker.fragment.filmsAndSeries.FilmsAndSeriesFragment"
         android:label="Films &amp; Series"
         tools:layout="@layout/fragment_films_and_series">
         <action
@@ -23,13 +23,13 @@
 
     <fragment
         android:id="@+id/nav_liked"
-        android:name="com.example.movietracker.LikedFragment"
+        android:name="com.example.movietracker.fragment.liked.LikedFragment"
         android:label="Liked"
         tools:layout="@layout/fragment_liked" />
 
     <fragment
         android:id="@+id/nav_inspect_movie"
-        android:name="com.example.movietracker.InspectMovieFragment"
+        android:name="com.example.movietracker.fragment.inspectMovie.InspectMovieFragment"
         android:label="Inspect Movie"
         tools:layout="@layout/fragment_inspect_movie" />
 </navigation>
