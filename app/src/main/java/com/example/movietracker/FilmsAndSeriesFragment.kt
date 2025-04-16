@@ -10,44 +10,20 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.movietracker.api.TmdbService
-import com.example.movietracker.api.TrendingResponse
 import com.example.movietracker.databinding.FragmentFilmsAndSeriesBinding
 import com.example.movietracker.itemList.Item
 import com.example.movietracker.itemList.ItemAdapter
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import androidx.recyclerview.widget.RecyclerView
-
 
 class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
     private lateinit var binding: FragmentFilmsAndSeriesBinding
-    private val movies = mutableListOf<Item>()
-    private var currentPage = 1
-    private var isLoading = false
-
-    private fun showLoadingSpinner() {
-        (requireActivity() as? MainActivity)?.showLoadingSpinner()
-        isLoading = true
-    }
-
-    private fun hideLoadingSpinner() {
-        (requireActivity() as? MainActivity)?.hideLoadingSpinner()
-        isLoading = false
-    }
-
-    private fun showReloadButton() {
-        (requireActivity() as? MainActivity)?.showReloadButton()
-    }
-
-    private fun hideReloadButton() {
-        (requireActivity() as? MainActivity)?.hideReloadButton()
-    }
+    private val viewModel: FilmsAndSeriesViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -55,13 +31,13 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
 
         // Setup reload button behavior
         (requireActivity() as? MainActivity)?.setupRetryButton((requireActivity() as MainActivity).binding.reloadButton) {
-            fetchTrendingMovies(currentPage)
+            fetchTrendingMovies()
         }
 
         // Setup RecyclerView
         val layoutManager = LinearLayoutManager(context)
         binding.recyclerView.layoutManager = layoutManager
-        val adapter = ItemAdapter(movies) { selectedItem ->
+        val adapter = ItemAdapter(viewModel.movies) { selectedItem ->
             // Navigate to InspectMovieFragment with the selected movie's ID
             val bundle = Bundle().apply {
                 putInt("id", selectedItem.tmbdId)
@@ -74,19 +50,21 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (!isLoading && layoutManager.findLastVisibleItemPosition() == movies.size - 1) {
-                    showLoadingSpinner()
-                    currentPage++
-                    fetchTrendingMovies(currentPage)
+                if (!viewModel.isLoading && layoutManager.findLastVisibleItemPosition() == viewModel.movies.size - 1) {
+                    fetchTrendingMovies()
                 }
             }
         })
 
-        // Fetch the first page of trending movies
-        fetchTrendingMovies(currentPage)
+        // Fetch data if not already loaded
+        if (viewModel.movies.isEmpty()) {
+            fetchTrendingMovies()
+        } else {
+            adapter.notifyDataSetChanged()
+        }
     }
 
-    private fun fetchTrendingMovies(page: Int) {
+    private fun fetchTrendingMovies() {
         showLoadingSpinner()
 
         val apiKey = "140b81b85e8e8baf9d417e99a3c9ab7e"
@@ -96,66 +74,58 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
             .build()
             .create(TmdbService::class.java)
 
-        service.getTrending(apiKey, page).enqueue(object : Callback<TrendingResponse> {
-            override fun onResponse(
-                call: Call<TrendingResponse>,
-                response: Response<TrendingResponse>
-            ) {
-                hideLoadingSpinner()
-                if (response.isSuccessful) {
-                    val newMovies = response.body()?.results?.map {
-                        Item(
-                            tmbdId = it.id,
-                            title = it.title ?: it.name.orEmpty(),
-                            subTitle = it.formattedReleaseInfo ?: "Release info unavailable",
-                            imageUrl = "https://image.tmdb.org/t/p/w500${it.posterPath}",
-                            isFilm = it.mediaType == "movie"
-                        )
-                    } ?: emptyList()
-
-                    val startPosition = movies.size
-                    movies.addAll(newMovies)
-                    binding.recyclerView.adapter?.notifyItemRangeInserted(
-                        startPosition,
-                        newMovies.size
-                    )
-                }
-            }
-
-            override fun onFailure(call: Call<TrendingResponse>, t: Throwable) {
-                hideLoadingSpinner()
-                showReloadButton()
-
-                val dialog = Dialog(requireContext(), android.R.style.Theme_Material_Dialog)
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-                dialog.setCancelable(true)
-
-                // Set full-screen layout parameters
-                dialog.window?.setLayout(
-                    WindowManager.LayoutParams.MATCH_PARENT,
-                    WindowManager.LayoutParams.MATCH_PARENT
-                )
-                dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-
-                // Inflate a layout for Material 3 dialog content
-                val dialogView = LayoutInflater.from(requireContext()).inflate(
-                    R.layout.dialog_fullscreen_error,
-                    null
-                )
-                dialog.setContentView(dialogView)
-
-                // Configure views
-                dialogView.findViewById<TextView>(R.id.dialog_title).text = "An issue occurred"
-                dialogView.findViewById<TextView>(R.id.dialog_message).text =
-                    "Something went wrong while loading.\nThis could be due to a network issue.\nPlease check your internet connection, and if the problem persists, \nplease try again later."
-                dialogView.findViewById<ImageView>(R.id.dialog_icon)
-                    .setImageResource(R.drawable.ic_error)
-                dialogView.findViewById<Button>(R.id.dialog_button_ok).setOnClickListener {
-                    dialog.dismiss()
-                }
-
-                dialog.show()
-            }
+        viewModel.fetchTrendingMovies(apiKey, service, { newMovies ->
+            val startPosition = viewModel.movies.size - newMovies.size
+            binding.recyclerView.adapter?.notifyItemRangeInserted(startPosition, newMovies.size)
+            hideLoadingSpinner()
+        }, {
+            hideLoadingSpinner()
+            showReloadButton()
+            showErrorDialog()
         })
+    }
+
+    private fun showLoadingSpinner() {
+        (requireActivity() as? MainActivity)?.showLoadingSpinner()
+    }
+
+    private fun hideLoadingSpinner() {
+        (requireActivity() as? MainActivity)?.hideLoadingSpinner()
+    }
+
+    private fun showReloadButton() {
+        (requireActivity() as? MainActivity)?.showReloadButton()
+    }
+
+    private fun showErrorDialog() {
+        val dialog = Dialog(requireContext(), android.R.style.Theme_Material_Dialog)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+
+        // Set full-screen layout parameters
+        dialog.window?.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT
+        )
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        // Inflate a layout for Material 3 dialog content
+        val dialogView = LayoutInflater.from(requireContext()).inflate(
+            R.layout.dialog_fullscreen_error,
+            null
+        )
+        dialog.setContentView(dialogView)
+
+        // Configure views
+        dialogView.findViewById<TextView>(R.id.dialog_title).text = "An issue occurred"
+        dialogView.findViewById<TextView>(R.id.dialog_message).text =
+            "Something went wrong while loading.\nThis could be due to a network issue.\nPlease check your internet connection, and if the problem persists, \nplease try again later."
+        dialogView.findViewById<ImageView>(R.id.dialog_icon)
+            .setImageResource(R.drawable.ic_error)
+        dialogView.findViewById<Button>(R.id.dialog_button_ok).setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 }
