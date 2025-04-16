@@ -61,18 +61,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun showReloadButton() {
-        binding.reloadButton.visibility = View.VISIBLE
+        binding.reloadButtonContainer.visibility = View.VISIBLE
     }
 
     fun hideReloadButton() {
-        binding.reloadButton.visibility = View.GONE
+        binding.reloadButtonContainer.visibility = View.GONE
     }
 
-    fun setupRetryButton(retryButton: View, reloadFunction: () -> Unit) {
-        retryButton.setOnClickListener {
-            showLoadingSpinner() // Show the loading spinner
-            retryButton.visibility = View.GONE // Hide the retry button
-            reloadFunction() // Call the reload function
+    fun setupRetryButton(reloadButton: View, reloadFunction: () -> Unit) {
+        reloadButton.setOnClickListener {
+            hideReloadButton()
+            showLoadingSpinner() 
+            reloadFunction()
         }
     }
 }

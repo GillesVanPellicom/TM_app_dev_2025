@@ -100,8 +100,8 @@ class InspectMovieFragment : Fragment(R.layout.fragment_inspect_movie) {
                         val item = Item(
                             tmbdId = movie.id,
                             imageUrl = "https://image.tmdb.org/t/p/w500${movie.posterPath}",
-                            title = movie.title ?: "Unknown Title",
-                            subTitle = movie.overview ?: "No Description",
+                            title = movie.title ?: "Error",
+                            subTitle = movie.releaseDate?.take(4) ?: "Error",
                             isFilm = true
                         )
                         MainActivity.database.itemDao().insert(item)
