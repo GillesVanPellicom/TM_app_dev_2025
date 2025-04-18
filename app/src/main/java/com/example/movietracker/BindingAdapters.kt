@@ -5,10 +5,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.example.movietracker.api.Creator
 import com.example.movietracker.api.Genre
+import com.example.movietracker.api.Network
 import com.example.movietracker.api.ProductionCompany
 import com.example.movietracker.api.ProductionCountry
 import com.example.movietracker.api.SpokenLanguage
+import kotlin.collections.joinToString
 
 @BindingAdapter("imageUrl")
 fun loadImage(view: ImageView, url: String?) {
@@ -68,4 +71,14 @@ fun setTaglineText(view: TextView, tagline: String?) {
     } else {
         view.visibility = View.GONE
     }
+}
+
+@BindingAdapter("createdByText")
+fun setCreatedByText(textView: TextView, createdBy: List<Creator>?) {
+    textView.text = createdBy?.joinToString(", ") { it.name } ?: ""
+}
+
+@BindingAdapter("networksText")
+fun setNetworksText(view: TextView, networks: List<Network>?) {
+    view.text = networks?.joinToString(", ") { it.name } ?: ""
 }

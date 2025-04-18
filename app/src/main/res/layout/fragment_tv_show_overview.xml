@@ -1,0 +1,116 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="tvShow"
+            type="com.example.movietracker.api.TvShowResponse" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Overview -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/overview"
+                android:textAppearance="?attr/textAppearanceHeadline6" />
+
+            <TextView
+                android:id="@+id/overviewText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{tvShow.overview}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="8dp" />
+
+            <!-- First Air Date -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/first_air_date"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/firstAirDateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{tvShow.firstAirDate}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="8dp" />
+
+            <!-- Genres -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/genres"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/genresText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:genresText="@{tvShow.genres}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="8dp" />
+
+            <!-- Number of Seasons -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/number_of_seasons"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/numberOfSeasonsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{String.valueOf(tvShow.numberOfSeasons)}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="8dp" />
+
+            <!-- Number of Episodes -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/number_of_episodes"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/numberOfEpisodesText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{String.valueOf(tvShow.numberOfEpisodes)}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="8dp" />
+
+            <!-- Spoken Languages -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/spoken_languages"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/languagesText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:languagesText="@{tvShow.spokenLanguages}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+    </ScrollView>
+</layout>

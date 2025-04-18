@@ -19,6 +19,12 @@ interface TmdbService {
         @Query("api_key") apiKey: String
     ): Call<MovieResponse>
 
+    @GET("tv/{id}")
+    fun getTvShow(
+        @Path("id") id: Int,
+        @Query("api_key") apiKey: String
+    ): Call<TvShowResponse>
+
     @GET("search/multi")
     fun searchMoviesOrShows(
         @Query("api_key") apiKey: String,
@@ -28,10 +34,10 @@ interface TmdbService {
 }
 
 data class TrendingResponse(
-    @SerializedName("results") val results: List<TmdbTrendingListItem>
+    @SerializedName("results") val results: List<TrendingListItem>
 )
 
-data class TmdbTrendingListItem(
+data class TrendingListItem(
     @SerializedName("id") val id: Int,
     @SerializedName("title") val title: String?,
     @SerializedName("name") val name: String?,
@@ -79,25 +85,71 @@ data class MovieResponse(
     @SerializedName("vote_count") val voteCount: Int
 )
 
-data class Genre(
-    @SerializedName("id") val id: Int,
-    @SerializedName("name") val name: String
+data class TvShowResponse(
+    val adult: Boolean,
+    val backdropPath: String?,
+    val createdBy: List<Creator>,
+    val episodeRunTime: List<Int>,
+    @SerializedName("first_air_date") val firstAirDate: String?,
+    val genres: List<Genre>,
+    val homepage: String?,
+    val id: Int,
+    val inProduction: Boolean,
+    val languages: List<String>,
+    val lastAirDate: String?,
+    val lastEpisodeToAir: Episode?,
+    val name: String?,
+    val nextEpisodeToAir: Episode?,
+    val networks: List<Network>,
+    val numberOfEpisodes: Int,
+    val numberOfSeasons: Int,
+    val originCountry: List<String>,
+    @SerializedName("original_language") val originalLanguage: String,
+    val originalName: String,
+    val overview: String?,
+    val popularity: Double,
+    @SerializedName("poster_path") val posterPath: String?,
+    val productionCompanies: List<ProductionCompany>,
+    val productionCountries: List<ProductionCountry>,
+    val seasons: List<Season>,
+    val spokenLanguages: List<SpokenLanguage>,
+    val status: String,
+    val tagline: String?,
+    val type: String,
+    val voteAverage: Double,
+    val voteCOunt: Int
 )
 
-data class ProductionCompany(
-    @SerializedName("id") val id: Int,
-    @SerializedName("logo_path") val logoPath: String?,
-    @SerializedName("name") val name: String,
-    @SerializedName("origin_country") val originCountry: String
+data class Creator(val name: String)
+data class Genre(val id: Int, val name: String)
+data class Episode(
+    val id: Int,
+    val name: String,
+    val overView: String,
+    val voteAverage: Double,
+    val voteCount: Int,
+    val airDate: String?,
+    val episodeNumber: Int,
+    val episodeType: String,
+    val productionCode: String,
+    val runtime: Int?,
+    val seasonNumber: Int,
+    val showId: Int,
+    val stillPath: String?
 )
 
-data class ProductionCountry(
-    @SerializedName("iso_3166_1") val iso31661: String,
-    @SerializedName("name") val name: String
+data class Network(val id: Int, val name: String)
+data class ProductionCompany(val id: Int, val name: String)
+data class ProductionCountry(val iso31661: String, val name: String)
+data class Season(
+    val airDate: String?,
+    val episodeCount: Int,
+    val id: Int,
+    val name: String,
+    val overview: String,
+    val posterPath: String?,
+    val seasonNumber: Int,
+    val voteAverage: Double
 )
 
-data class SpokenLanguage(
-    @SerializedName("english_name") val englishName: String,
-    @SerializedName("iso_639_1") val iso6391: String,
-    @SerializedName("name") val name: String
-)
+data class SpokenLanguage(val englishName: String, val iso6391: String, val name: String)

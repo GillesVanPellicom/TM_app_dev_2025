@@ -1,5 +1,6 @@
 package com.example.movietracker.fragment.filmsAndSeries
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movietracker.api.TmdbService
@@ -32,6 +33,7 @@ class FilmsAndSeriesViewModel : ViewModel() {
                 ) {
                     isLoading = false
                     if (response.isSuccessful) {
+
                         val newMovies = response.body()?.results?.map {
                             Item(
                                 tmbdId = it.id,

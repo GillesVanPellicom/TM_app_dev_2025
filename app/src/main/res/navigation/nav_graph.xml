@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_inspect_movie"
             app:destination="@id/nav_inspect_movie" />
+        <action
+            android:id="@+id/action_inspect_tv_show"
+            app:destination="@id/nav_inspect_tv_show" />
     </fragment>
 
     <fragment
@@ -32,4 +35,10 @@
         android:name="com.example.movietracker.fragment.inspectMovie.InspectMovieFragment"
         android:label="Inspect Movie"
         tools:layout="@layout/fragment_inspect_movie" />
+
+    <fragment
+        android:id="@+id/nav_inspect_tv_show"
+        android:name="com.example.movietracker.fragment.inspectTvShow.InspectTvShowFragment"
+        android:label="Inspect Movie"
+        tools:layout="@layout/fragment_inspect_tv_show" />
 </navigation>

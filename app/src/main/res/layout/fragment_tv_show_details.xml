@@ -1,0 +1,184 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="tvShow"
+            type="com.example.movietracker.api.TvShowResponse" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="16dp"
+        android:clipToPadding="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Tagline -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tagline"
+                android:textAppearance="?attr/textAppearanceHeadline6" />
+
+            <TextView
+                android:id="@+id/taglineText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{tvShow.tagline}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="8dp" />
+
+            <!-- Status -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/status"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/statusText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{tvShow.status}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="8dp" />
+
+            <!-- Original Language -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/original_language"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/originalLanguageText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{tvShow.originalLanguage}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="8dp" />
+
+            <!-- Original Name -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/original_title"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/originalNameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{tvShow.originalName}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="8dp" />
+
+            <!-- Adult -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/adult"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/adultText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{tvShow.adult ? `Yes` : `No`}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="8dp" />
+
+            <!-- Homepage -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/homepage"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/homepageText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{tvShow.homepage}"
+                android:autoLink="web"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="8dp" />
+
+            <!-- Created By -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/created_by"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/createdByText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:createdByText="@{tvShow.createdBy}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="8dp" />
+
+            <!-- Networks -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/networks"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/networksText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:networksText="@{tvShow.networks}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="8dp" />
+
+            <!-- Production Companies -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/production_companies"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/companiesText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:companiesText="@{tvShow.productionCompanies}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="8dp" />
+
+            <!-- Production Countries -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/production_countries"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/countriesText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:countriesText="@{tvShow.productionCountries}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+    </ScrollView>
+</layout>

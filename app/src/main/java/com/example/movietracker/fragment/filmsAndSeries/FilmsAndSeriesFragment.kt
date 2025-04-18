@@ -2,6 +2,7 @@ package com.example.movietracker.fragment.filmsAndSeries
 
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
@@ -39,11 +40,14 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
         val layoutManager = LinearLayoutManager(context)
         binding.recyclerView.layoutManager = layoutManager
         val adapter = ItemAdapter(viewModel.movies) { selectedItem ->
-            // Navigate to InspectMovieFragment with the selected movie's ID
             val bundle = Bundle().apply {
                 putInt("id", selectedItem.tmbdId)
             }
-            findNavController().navigate(R.id.action_inspect_movie, bundle)
+            if (selectedItem.isFilm) {
+                findNavController().navigate(R.id.action_inspect_movie, bundle)
+            } else {
+                findNavController().navigate(R.id.action_inspect_tv_show, bundle)
+            }
         }
         binding.recyclerView.adapter = adapter
 

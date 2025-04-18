@@ -3,7 +3,7 @@
 
     <!-- Movie details -->
     <string name="backdrop_image_description">Movie backdrop image</string>
-    <string name="poster_image_description">Movie poster image</string>
+    <string name="poster_image_description">Poster image</string>
     <string name="plot_summary">Plot Summary</string>
     <string name="release_date">Release Date</string>
     <string name="genres">Genres</string>
@@ -21,4 +21,11 @@
     <string name="budget">Budget</string>
     <string name="revenue">Revenue</string>
 
+    <!-- TV show details -->
+    <string name="first_air_date">First Air Date</string>
+    <string name="overview">Overview</string>
+    <string name="number_of_seasons">Number of Seasons</string>
+    <string name="number_of_episodes">Number of Episodes</string>
+    <string name="created_by">Created By</string>
+    <string name="networks">Networks</string>
 </resources>
