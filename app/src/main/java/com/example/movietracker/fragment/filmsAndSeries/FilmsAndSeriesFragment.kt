@@ -1,17 +1,9 @@
 package com.example.movietracker.fragment.filmsAndSeries
 
-import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.view.Window
-import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -24,11 +16,6 @@ import com.example.movietracker.databinding.FragmentFilmsAndSeriesBinding
 import com.example.movietracker.itemList.Item
 import com.example.movietracker.itemList.ItemAdapter
 import com.google.android.material.search.SearchView
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import kotlin.text.clear
-import kotlin.text.compareTo
-import kotlin.toString
 
 class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
   private lateinit var binding: FragmentFilmsAndSeriesBinding

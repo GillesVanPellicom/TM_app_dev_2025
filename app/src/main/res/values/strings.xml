@@ -40,4 +40,9 @@
   <string name="main_reload">Reload</string>
   <string name="home_go_to_home_fragment">Go to home Fragment</string>
   <string name="fas_search_movies_or_series">Search movies or series</string>
+
+  <!-- Liked items -->
+  <string name="added_to_liked">%1$s added to liked</string>
+  <string name="removed_from_liked">%1$s removed from liked</string>
+  <string name="undo">Undo</string>
 </resources>

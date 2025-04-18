@@ -1,15 +1,8 @@
 package com.example.movietracker.fragment.inspectMovie
 
-import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -20,14 +13,12 @@ import com.example.movietracker.R
 import com.example.movietracker.api.MovieResponse
 import com.example.movietracker.api.TmdbService
 import com.example.movietracker.databinding.FragmentInspectMovieBinding
-import com.example.movietracker.itemList.Item
+import com.example.movietracker.fragment.liked.toggleLikeStatus
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class InspectMovieFragment : Fragment(R.layout.fragment_inspect_movie) {
   private lateinit var binding: FragmentInspectMovieBinding
@@ -72,30 +63,15 @@ class InspectMovieFragment : Fragment(R.layout.fragment_inspect_movie) {
     binding.fabLikedMovie.setOnClickListener {
       val movie = viewModel.movie.value
       if (movie != null) {
-        lifecycleScope.launch {
-          val items =
-            MainActivity.Companion.database.itemDao().getItemsByType(isFilm = true)
-          val existingItem = items.find { it.tmbdId == movie.id }
-
-          if (existingItem != null) {
-            // Remove the movie from the database
-            MainActivity.Companion.database.itemDao().delete(existingItem)
-            Log.d("InspectMovieFragment", "Movie removed from database: $existingItem")
-            binding.fabLikedMovie.setImageResource(R.drawable.ic_liked)
-          } else {
-            // Add the movie to the database
-            val item = Item(
-              tmbdId = movie.id,
-              imageUrl = "https://image.tmdb.org/t/p/w500${movie.posterPath}",
-              title = movie.title ?: "Error",
-              subTitle = movie.releaseDate?.take(4) ?: "Error",
-              isFilm = true
-            )
-            MainActivity.Companion.database.itemDao().insert(item)
-            Log.d("InspectMovieFragment", "Movie added to database: $item")
-            binding.fabLikedMovie.setImageResource(R.drawable.ic_liked_filled)
-          }
-        }
+        toggleLikeStatus(
+          fab = binding.fabLikedMovie,
+          tmbdId = movie.id,
+          title = movie.title ?: "",
+          imageUrl = "https://image.tmdb.org/t/p/w500${movie.posterPath}",
+          date = movie.releaseDate,
+          isFilm = true,
+          rootView = binding.root
+        )
       }
     }
   }

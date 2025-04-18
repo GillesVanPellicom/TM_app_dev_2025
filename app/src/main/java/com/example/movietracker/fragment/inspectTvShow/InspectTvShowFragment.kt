@@ -1,15 +1,8 @@
 package com.example.movietracker.fragment.inspectTvShow
 
-import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -20,14 +13,13 @@ import com.example.movietracker.R
 import com.example.movietracker.api.TmdbService
 import com.example.movietracker.api.TvShowResponse
 import com.example.movietracker.databinding.FragmentInspectTvShowBinding
-import com.example.movietracker.itemList.Item
+import com.example.movietracker.fragment.liked.toggleLikeStatus
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+
 
 class InspectTvShowFragment : Fragment(R.layout.fragment_inspect_tv_show) {
   private lateinit var binding: FragmentInspectTvShowBinding
@@ -68,30 +60,20 @@ class InspectTvShowFragment : Fragment(R.layout.fragment_inspect_tv_show) {
     }
 
     // Add TV show to database when FAB is clicked
+// InspectTvShowFragment.kt
+// Replace the FAB onClick listener with this:
     binding.fabLikedTvShow.setOnClickListener {
       val tvShow = viewModel.tvShow.value
       if (tvShow != null) {
-        lifecycleScope.launch {
-          val items = MainActivity.Companion.database.itemDao().getItemsByType(isFilm = false)
-          val existingItem = items.find { it.tmbdId == tvShow.id }
-
-          if (existingItem != null) {
-            MainActivity.Companion.database.itemDao().delete(existingItem)
-            Log.d("InspectTvShowFragment", "TV Show removed from database: $existingItem")
-            binding.fabLikedTvShow.setImageResource(R.drawable.ic_liked)
-          } else {
-            val item = Item(
-              tmbdId = tvShow.id,
-              imageUrl = "https://image.tmdb.org/t/p/w500${tvShow.posterPath}",
-              title = tvShow.name ?: "Error",
-              subTitle = tvShow.firstAirDate?.take(4) ?: "Error",
-              isFilm = false
-            )
-            MainActivity.Companion.database.itemDao().insert(item)
-            Log.d("InspectTvShowFragment", "TV Show added to database: $item")
-            binding.fabLikedTvShow.setImageResource(R.drawable.ic_liked_filled)
-          }
-        }
+        toggleLikeStatus(
+          fab = binding.fabLikedTvShow,
+          tmbdId = tvShow.id,
+          title = tvShow.name ?: "",
+          imageUrl = "https://image.tmdb.org/t/p/w500${tvShow.posterPath}",
+          date = tvShow.firstAirDate,
+          isFilm = false,
+          rootView = binding.root
+        )
       }
     }
   }
