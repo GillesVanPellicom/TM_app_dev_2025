@@ -9,21 +9,21 @@ import androidx.fragment.app.viewModels
 import com.example.movietracker.databinding.FragmentMovieDetailsBinding
 
 class MovieDetailsFragment : Fragment() {
-    private lateinit var binding: FragmentMovieDetailsBinding
-    private val viewModel: MovieViewModel by viewModels({ requireParentFragment() })
+  private lateinit var binding: FragmentMovieDetailsBinding
+  private val viewModel: MovieViewModel by viewModels({ requireParentFragment() })
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentMovieDetailsBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+  override fun onCreateView(
+    inflater: LayoutInflater, container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View {
+    binding = FragmentMovieDetailsBinding.inflate(inflater, container, false)
+    return binding.root
+  }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel.movie.observe(viewLifecycleOwner) { movie ->
-            binding.movie = movie
-        }
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    viewModel.movie.observe(viewLifecycleOwner) { movie ->
+      binding.movie = movie
     }
+  }
 }

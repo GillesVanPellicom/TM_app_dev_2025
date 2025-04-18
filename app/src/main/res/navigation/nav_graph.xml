@@ -5,47 +5,47 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/nav_home">
 
-    <fragment
-        android:id="@+id/nav_home"
-        android:name="com.example.movietracker.fragment.home.HomeFragment"
-        android:label="Home"
-        tools:layout="@layout/fragment_home" />
+  <fragment
+      android:id="@+id/nav_home"
+      android:name="com.example.movietracker.fragment.home.HomeFragment"
+      android:label="Home"
+      tools:layout="@layout/fragment_home" />
 
-    <fragment
-        android:id="@+id/nav_films_and_series"
-        android:name="com.example.movietracker.fragment.filmsAndSeries.FilmsAndSeriesFragment"
-        android:label="Films &amp; Series"
-        tools:layout="@layout/fragment_films_and_series">
-        <action
-            android:id="@+id/action_inspect_movie"
-            app:destination="@id/nav_inspect_movie" />
-        <action
-            android:id="@+id/action_inspect_tv_show"
-            app:destination="@id/nav_inspect_tv_show" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/nav_liked"
-        android:name="com.example.movietracker.fragment.liked.LikedFragment"
-        android:label="Liked"
-        tools:layout="@layout/fragment_liked">
+  <fragment
+      android:id="@+id/nav_films_and_series"
+      android:name="com.example.movietracker.fragment.filmsAndSeries.FilmsAndSeriesFragment"
+      android:label="Films &amp; Series"
+      tools:layout="@layout/fragment_films_and_series">
     <action
         android:id="@+id/action_inspect_movie"
         app:destination="@id/nav_inspect_movie" />
     <action
         android:id="@+id/action_inspect_tv_show"
         app:destination="@id/nav_inspect_tv_show" />
-    </fragment>
+  </fragment>
 
-    <fragment
-        android:id="@+id/nav_inspect_movie"
-        android:name="com.example.movietracker.fragment.inspectMovie.InspectMovieFragment"
-        android:label="Inspect Movie"
-        tools:layout="@layout/fragment_inspect_movie" />
+  <fragment
+      android:id="@+id/nav_liked"
+      android:name="com.example.movietracker.fragment.liked.LikedFragment"
+      android:label="Liked"
+      tools:layout="@layout/fragment_liked">
+    <action
+        android:id="@+id/action_inspect_movie"
+        app:destination="@id/nav_inspect_movie" />
+    <action
+        android:id="@+id/action_inspect_tv_show"
+        app:destination="@id/nav_inspect_tv_show" />
+  </fragment>
 
-    <fragment
-        android:id="@+id/nav_inspect_tv_show"
-        android:name="com.example.movietracker.fragment.inspectTvShow.InspectTvShowFragment"
-        android:label="Inspect Movie"
-        tools:layout="@layout/fragment_inspect_tv_show" />
+  <fragment
+      android:id="@+id/nav_inspect_movie"
+      android:name="com.example.movietracker.fragment.inspectMovie.InspectMovieFragment"
+      android:label="Inspect Movie"
+      tools:layout="@layout/fragment_inspect_movie" />
+
+  <fragment
+      android:id="@+id/nav_inspect_tv_show"
+      android:name="com.example.movietracker.fragment.inspectTvShow.InspectTvShowFragment"
+      android:label="Inspect Movie"
+      tools:layout="@layout/fragment_inspect_tv_show" />
 </navigation>

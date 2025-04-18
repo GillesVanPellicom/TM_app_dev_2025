@@ -6,5 +6,5 @@ import com.example.movietracker.itemList.Item
 
 @Database(entities = [Item::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun itemDao(): ItemDao
+  abstract fun itemDao(): ItemDao
 }

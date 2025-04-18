@@ -1,41 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Movie details -->
-    <string name="backdrop_image_description">Movie backdrop image</string>
-    <string name="poster_image_description">Poster image</string>
-    <string name="plot_summary">Plot Summary</string>
-    <string name="release_date">Release Date</string>
-    <string name="genres">Genres</string>
-    <string name="runtime">Runtime</string>
-    <string name="spoken_languages">Spoken Languages</string>
-    <string name="status">Status</string>
-    <string name="original_language">Original Language</string>
-    <string name="original_title">Original Title</string>
-    <string name="adult">Adult</string>
-    <string name="production_companies">Production Companies</string>
-    <string name="production_countries">Production Countries</string>
-    <string name="tagline">Tagline</string>
-    <string name="homepage">Homepage</string>
-    <string name="imdb_id">IMDb ID</string>
-    <string name="budget">Budget</string>
-    <string name="revenue">Revenue</string>
+  <!-- Movie details -->
+  <string name="backdrop_image_description">Movie backdrop image</string>
+  <string name="poster_image_description">Poster image</string>
+  <string name="plot_summary">Plot Summary</string>
+  <string name="release_date">Release Date</string>
+  <string name="genres">Genres</string>
+  <string name="runtime">Runtime</string>
+  <string name="spoken_languages">Spoken Languages</string>
+  <string name="status">Status</string>
+  <string name="original_language">Original Language</string>
+  <string name="original_title">Original Title</string>
+  <string name="adult">Adult</string>
+  <string name="production_companies">Production Companies</string>
+  <string name="production_countries">Production Countries</string>
+  <string name="tagline">Tagline</string>
+  <string name="homepage">Homepage</string>
+  <string name="imdb_id">IMDb ID</string>
+  <string name="budget">Budget</string>
+  <string name="revenue">Revenue</string>
 
-    <!-- TV show details -->
-    <string name="first_air_date">First Air Date</string>
-    <string name="overview">Overview</string>
-    <string name="number_of_seasons">Number of Seasons</string>
-    <string name="number_of_episodes">Number of Episodes</string>
-    <string name="created_by">Created By</string>
-    <string name="networks">Networks</string>
+  <!-- TV show details -->
+  <string name="first_air_date">First Air Date</string>
+  <string name="overview">Overview</string>
+  <string name="number_of_seasons">Number of Seasons</string>
+  <string name="number_of_episodes">Number of Episodes</string>
+  <string name="created_by">Created By</string>
+  <string name="networks">Networks</string>
 
 
-    <!-- Error dialogue -->
-    <string name="ed_title">An issue occurred</string>
-    <string name="ed_text">Something went wrong while loading.\nThis could be due to a network issue.\nPlease check your internet connection, and if the problem persists, \nplease try again later.</string>
+  <!-- Error dialogue -->
+  <string name="ed_title">An issue occurred</string>
+  <string name="ed_text">Something went wrong while loading.\nThis could be due to a network issue.\nPlease check your internet connection, and if the problem persists, \nplease try again later.</string>
 
-    <!-- BindingAdapters-->
-    <string name="binding_runtimeText">%1$dh %2$dm</string>
-    <string name="binding_moneyText">$%1$s</string>
-    <string name="main_reload">Reload</string>
+  <!-- BindingAdapters-->
+  <string name="binding_runtimeText">%1$dh %2$dm</string>
+  <string name="binding_moneyText">$%1$s</string>
+  <string name="main_reload">Reload</string>
+  <string name="home_go_to_home_fragment">Go to home Fragment</string>
+  <string name="fas_search_movies_or_series">Search movies or series</string>
 </resources>

@@ -1,203 +1,205 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-        <import type="android.view.View" />
-        <variable
-            name="movie"
-            type="com.example.movietracker.api.MovieResponse" />
-    </data>
+  <data>
 
-    <ScrollView
+    <import type="android.view.View" />
+
+    <variable
+        name="movie"
+        type="com.example.movietracker.api.MovieResponse" />
+  </data>
+
+  <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:clipToPadding="false"
+      android:paddingBottom="16dp">
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="16dp"
-        android:clipToPadding="false">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+      <!-- Tagline -->
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/tagline"
+          android:textAppearance="?attr/textAppearanceHeadline6" />
 
-            <!-- Tagline -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tagline"
-                android:textAppearance="?attr/textAppearanceHeadline6" />
+      <TextView
+          android:id="@+id/taglineText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:textAppearance="?attr/textAppearanceBody1"
+          app:taglineText="@{movie.tagline}" />
 
-            <TextView
-                android:id="@+id/taglineText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:taglineText="@{movie.tagline}"
-                android:textAppearance="?attr/textAppearanceBody1"
-                android:layout_marginTop="8dp" />
+      <!-- Status -->
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          android:text="@string/status"
+          android:textAppearance="?attr/textAppearanceHeadline6" />
 
-            <!-- Status -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/status"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                android:layout_marginTop="16dp" />
+      <TextView
+          android:id="@+id/statusText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:text="@{movie.status}"
+          android:textAppearance="?attr/textAppearanceBody1" />
 
-            <TextView
-                android:id="@+id/statusText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{movie.status}"
-                android:textAppearance="?attr/textAppearanceBody1"
-                android:layout_marginTop="8dp" />
+      <!-- Original Language -->
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          android:text="@string/original_language"
+          android:textAppearance="?attr/textAppearanceHeadline6" />
 
-            <!-- Original Language -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/original_language"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                android:layout_marginTop="16dp" />
+      <TextView
+          android:id="@+id/originalLanguageText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:text="@{movie.originalLanguage}"
+          android:textAppearance="?attr/textAppearanceBody1" />
 
-            <TextView
-                android:id="@+id/originalLanguageText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{movie.originalLanguage}"
-                android:textAppearance="?attr/textAppearanceBody1"
-                android:layout_marginTop="8dp" />
+      <!-- Original Title -->
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          android:text="@string/original_title"
+          android:textAppearance="?attr/textAppearanceHeadline6" />
 
-            <!-- Original Title -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/original_title"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                android:layout_marginTop="16dp" />
+      <TextView
+          android:id="@+id/originalTitleText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:text="@{movie.originalTitle}"
+          android:textAppearance="?attr/textAppearanceBody1" />
 
-            <TextView
-                android:id="@+id/originalTitleText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{movie.originalTitle}"
-                android:textAppearance="?attr/textAppearanceBody1"
-                android:layout_marginTop="8dp" />
+      <!-- Adult -->
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          android:text="@string/adult"
+          android:textAppearance="?attr/textAppearanceHeadline6" />
 
-            <!-- Adult -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/adult"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                android:layout_marginTop="16dp" />
+      <TextView
+          android:id="@+id/adultText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:text="@{movie.adult ? `Yes` : `No`}"
+          android:textAppearance="?attr/textAppearanceBody1" />
 
-            <TextView
-                android:id="@+id/adultText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{movie.adult ? `Yes` : `No`}"
-                android:textAppearance="?attr/textAppearanceBody1"
-                android:layout_marginTop="8dp" />
+      <!-- Homepage -->
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          android:text="@string/homepage"
+          android:textAppearance="?attr/textAppearanceHeadline6" />
 
-            <!-- Homepage -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/homepage"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                android:layout_marginTop="16dp" />
+      <TextView
+          android:id="@+id/homepageText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:autoLink="web"
+          android:text="@{`Homepage: ` + movie.homepage}"
+          android:textAppearance="?attr/textAppearanceBody1"
+          android:visibility="@{movie.homepage != null ? View.VISIBLE : View.GONE}" />
 
-            <TextView
-                android:id="@+id/homepageText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{`Homepage: ` + movie.homepage}"
-                android:autoLink="web"
-                android:textAppearance="?attr/textAppearanceBody1"
-                android:visibility="@{movie.homepage != null ? View.VISIBLE : View.GONE}"
-                android:layout_marginTop="8dp" />
+      <!-- IMDb ID -->
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          android:text="@string/imdb_id"
+          android:textAppearance="?attr/textAppearanceHeadline6" />
 
-            <!-- IMDb ID -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/imdb_id"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                android:layout_marginTop="16dp" />
+      <TextView
+          android:id="@+id/imdbText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:autoLink="web"
+          android:text="@{`IMDb: https://www.imdb.com/title/` + movie.imdbId}"
+          android:textAppearance="?attr/textAppearanceBody1"
+          android:visibility="@{movie.imdbId != null ? View.VISIBLE : View.GONE}" />
 
-            <TextView
-                android:id="@+id/imdbText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{`IMDb: https://www.imdb.com/title/` + movie.imdbId}"
-                android:autoLink="web"
-                android:textAppearance="?attr/textAppearanceBody1"
-                android:visibility="@{movie.imdbId != null ? View.VISIBLE : View.GONE}"
-                android:layout_marginTop="8dp" />
+      <!-- Production Companies -->
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          android:text="@string/production_companies"
+          android:textAppearance="?attr/textAppearanceHeadline6" />
 
-            <!-- Production Companies -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/production_companies"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                android:layout_marginTop="16dp" />
+      <TextView
+          android:id="@+id/companiesText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:textAppearance="?attr/textAppearanceBody1"
+          app:companiesText="@{movie.productionCompanies}" />
 
-            <TextView
-                android:id="@+id/companiesText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:companiesText="@{movie.productionCompanies}"
-                android:textAppearance="?attr/textAppearanceBody1"
-                android:layout_marginTop="8dp" />
+      <!-- Production Countries -->
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          android:text="@string/production_countries"
+          android:textAppearance="?attr/textAppearanceHeadline6" />
 
-            <!-- Production Countries -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/production_countries"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                android:layout_marginTop="16dp" />
+      <TextView
+          android:id="@+id/countriesText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:textAppearance="?attr/textAppearanceBody1"
+          app:countriesText="@{movie.productionCountries}" />
 
-            <TextView
-                android:id="@+id/countriesText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:countriesText="@{movie.productionCountries}"
-                android:textAppearance="?attr/textAppearanceBody1"
-                android:layout_marginTop="8dp" />
+      <!-- Budget -->
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          android:text="@string/budget"
+          android:textAppearance="?attr/textAppearanceHeadline6" />
 
-            <!-- Budget -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/budget"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                android:layout_marginTop="16dp" />
+      <TextView
+          android:id="@+id/budgetText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:textAppearance="?attr/textAppearanceBody1"
+          app:moneyText="@{movie.budget}" />
 
-            <TextView
-                android:id="@+id/budgetText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:moneyText="@{movie.budget}"
-                android:textAppearance="?attr/textAppearanceBody1"
-                android:layout_marginTop="8dp" />
+      <!-- Revenue -->
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          android:text="@string/revenue"
+          android:textAppearance="?attr/textAppearanceHeadline6" />
 
-            <!-- Revenue -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/revenue"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                android:layout_marginTop="16dp" />
-
-            <TextView
-                android:id="@+id/revenueText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:moneyText="@{movie.revenue}"
-                android:textAppearance="?attr/textAppearanceBody1"
-                android:layout_marginTop="8dp" />
-        </LinearLayout>
-    </ScrollView>
+      <TextView
+          android:id="@+id/revenueText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:textAppearance="?attr/textAppearanceBody1"
+          app:moneyText="@{movie.revenue}" />
+    </LinearLayout>
+  </ScrollView>
 </layout>

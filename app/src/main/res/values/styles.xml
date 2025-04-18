@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="ShapeAppearanceOverlay.Material3.Dialog.FullScreen" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">28dp</item>
-    </style>
-    <style name="Widget.MaterialComponents.ShapeableImageView.Rounded" parent="ShapeAppearance.MaterialComponents.SmallComponent">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">8dp</item>
-    </style>
+
+  <style name="ShapeAppearanceOverlay.Material3.Dialog.FullScreen" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">28dp</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.ShapeableImageView.Rounded" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">8dp</item>
+  </style>
 </resources>
