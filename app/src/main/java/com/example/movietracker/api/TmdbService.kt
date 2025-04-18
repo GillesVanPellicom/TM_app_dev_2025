@@ -34,7 +34,8 @@ interface TmdbService {
     fun searchMoviesOrShows(
         @Query("api_key") apiKey: String,
         @Query("query") query: String,
-        @Query("page") page: Int
+        @Query("page") page: Int,
+        @Query("language") language: String = "en-US"
     ): Call<TrendingResponse>
 
     companion object {
@@ -65,7 +66,8 @@ data class TrendingListItem(
     @SerializedName("poster_path") val posterPath: String?,
     @SerializedName("release_date") val movieReleaseDate: String?,
     @SerializedName("first_air_date") val tvReleaseDate: String?,
-    @SerializedName("media_type") val mediaType: String?
+    @SerializedName("media_type") val mediaType: String?,
+    @SerializedName("popularity") val popularity: Double = 0.0
 
 ) {
     val releaseDate: String?

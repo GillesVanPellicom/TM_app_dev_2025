@@ -14,6 +14,7 @@ class FilmsAndSeriesViewModel : ViewModel() {
     val movies = mutableListOf<Item>()
     var currentPage = 1
     var isLoading = false
+    var isInSearchMode = false
 
     fun fetchTrendingMovies(
         apiKey: String,
@@ -55,6 +56,58 @@ class FilmsAndSeriesViewModel : ViewModel() {
                     onFailure()
                 }
             })
+        }
+    }
+
+
+    fun searchMoviesOrShows(
+        query: String,
+        apiKey: String,
+        service: TmdbService,
+        onSuccess: (List<Item>) -> Unit,
+        onFailure: () -> Unit
+    ) {
+        if (isLoading) return
+        isLoading = true
+        isInSearchMode = true
+
+        viewModelScope.launch {
+            // Add language parameter for better relevance
+            service.searchMoviesOrShows(apiKey, query, 1, "en-US")
+                .enqueue(object : Callback<TrendingResponse> {
+                    override fun onResponse(
+                        call: Call<TrendingResponse>,
+                        response: Response<TrendingResponse>
+                    ) {
+                        isLoading = false
+                        if (response.isSuccessful) {
+                            val searchResults = response.body()?.results
+                                // Sort by popularity in descending order
+                                ?.sortedByDescending { it.popularity }
+                                ?.map {
+                                    Item(
+                                        tmbdId = it.id,
+                                        title = it.title ?: it.name.orEmpty(),
+                                        subTitle = it.formattedReleaseInfo
+                                            ?: "Release info unavailable",
+                                        imageUrl = "https://image.tmdb.org/t/p/w500${it.posterPath}",
+                                        isFilm = it.mediaType == "movie"
+                                    )
+                                } ?: emptyList()
+
+                            onSuccess(searchResults)
+                        } else {
+                            onFailure()
+                            isInSearchMode = false
+                        }
+                    }
+
+                    override fun onFailure(call: Call<TrendingResponse>, t: Throwable) {
+                        isLoading = false
+                        isInSearchMode = false
+                        onFailure()
+                    }
+                })
         }
     }
 }

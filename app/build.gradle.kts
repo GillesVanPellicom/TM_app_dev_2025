@@ -84,7 +84,7 @@ dependencies {
     // Glide (image loading)
     implementation(libs.glide)
     implementation(libs.androidx.navigation.fragment)
-//    kapt(libs.glide.compiler)
+    kapt(libs.glide.compiler)
 
     // Testing
     testImplementation(libs.junit)
