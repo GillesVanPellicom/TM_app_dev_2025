@@ -181,6 +181,7 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
     private fun navigateToItemDetail(selectedItem: Item) {
         val bundle = Bundle().apply {
             putInt("id", selectedItem.tmbdId)
+            putInt("sourceTabId", R.id.nav_films_and_series)
         }
         if (selectedItem.isFilm) {
             findNavController().navigate(R.id.action_inspect_movie, bundle)

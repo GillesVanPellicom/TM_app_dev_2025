@@ -2,6 +2,7 @@ package com.example.movietracker
 
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,9 @@ import androidx.navigation.ui.NavigationUI
 import androidx.room.Room
 import com.example.movietracker.database.AppDatabase
 import com.example.movietracker.databinding.ActivityMainBinding
+import kotlin.text.get
+import kotlin.text.set
+import kotlin.times
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,6 +34,9 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         lateinit var database: AppDatabase
+
+        // Source tab tracking - maps a detail screen instance to its source tab
+        val detailScreenSources = mutableMapOf<Int, Int>()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,25 +59,44 @@ class MainActivity : AppCompatActivity() {
         // Handle top padding to take system bar into account
         ViewCompat.setOnApplyWindowInsetsListener(binding.navHostFragment) { view, insets ->
             val systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            view.updatePadding(
-                top = systemBarsInsets.top,
-            )
+            view.updatePadding(top = systemBarsInsets.top)
             insets
         }
 
-        // Set up the bottom navigation with the NavController
         NavigationUI.setupWithNavController(binding.bottomNav, navController)
 
-        // Add a destination change listener to update the active state
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (destination.id) {
-                R.id.nav_home -> binding.bottomNav.menu.findItem(R.id.nav_home).isChecked = true
-                R.id.nav_films_and_series -> binding.bottomNav.menu.findItem(R.id.nav_films_and_series).isChecked = true
-                R.id.nav_liked -> binding.bottomNav.menu.findItem(R.id.nav_liked).isChecked = true
-                R.id.nav_inspect_movie, R.id.nav_inspect_tv_show -> {
-                    // Keep the Films & Series button active for these destinations
-                    binding.bottomNav.menu.findItem(R.id.nav_films_and_series).isChecked = true
+        // Destination change listener to handle navigation
+        navController.addOnDestinationChangedListener { _, destination, arguments ->
+            try {
+                when (destination.id) {
+                    R.id.nav_home, R.id.nav_films_and_series, R.id.nav_liked -> {
+                        // For main tabs, safely select them directly
+                        val menuItem = binding.bottomNav.menu.findItem(destination.id)
+                        menuItem?.isChecked = true
+                    }
+                    R.id.nav_inspect_movie, R.id.nav_inspect_tv_show -> {
+                        // Get source tab and item ID
+                        val sourceTabId = arguments?.getInt("sourceTabId", -1) ?: -1
+                        val itemId = arguments?.getInt("id", -1) ?: -1
+
+                        // Create a unique key for this detail screen instance
+                        val screenKey = destination.id * 100000 + itemId
+
+                        if (sourceTabId != -1) {
+                            // Store the source tab for this specific detail screen
+                            detailScreenSources[screenKey] = sourceTabId
+                        }
+
+                        // Get the tab to highlight (source tab or fallback to films & series)
+                        val tabToHighlight = detailScreenSources[screenKey] ?: R.id.nav_films_and_series
+
+                        // Check if the menu item exists before setting it as checked
+                        val menuItem = binding.bottomNav.menu.findItem(tabToHighlight)
+                        menuItem?.isChecked = true
+                    }
                 }
+            } catch (e: Exception) {
+                Log.e("MainActivity", "Error handling destination change: ${e.message}")
             }
         }
     }

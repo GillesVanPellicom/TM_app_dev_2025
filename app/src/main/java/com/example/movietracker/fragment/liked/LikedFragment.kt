@@ -153,6 +153,7 @@ class LikedFragment : Fragment(R.layout.fragment_liked) {
     private fun navigateToItemDetail(selectedItem: Item) {
         val bundle = Bundle().apply {
             putInt("id", selectedItem.tmbdId)
+            putInt("sourceTabId", R.id.nav_liked)
         }
         if (selectedItem.isFilm) {
             findNavController().navigate(R.id.action_inspect_movie, bundle)
