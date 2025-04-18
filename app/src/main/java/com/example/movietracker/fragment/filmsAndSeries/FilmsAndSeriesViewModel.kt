@@ -16,6 +16,11 @@ class FilmsAndSeriesViewModel : ViewModel() {
     var isLoading = false
     var isInSearchMode = false
 
+    // Search persistence variables
+    var currentSearchQuery: String = ""
+    var isSearchViewActive: Boolean = false
+    var searchResults = mutableListOf<Item>()
+
     fun fetchTrendingMovies(
         apiKey: String,
         service: TmdbService,

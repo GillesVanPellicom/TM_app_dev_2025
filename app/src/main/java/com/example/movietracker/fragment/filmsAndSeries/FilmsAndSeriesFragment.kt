@@ -88,11 +88,41 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 val query = binding.searchView.editText.text.toString()
                 if (query.isNotBlank()) {
+                    // Save query in ViewModel
+                    viewModel.currentSearchQuery = query
                     performSearch(query)
                 }
                 true
             } else {
                 false
+            }
+        }
+
+        // Handle SearchView state changes
+        binding.searchView.addTransitionListener { _, _, newState ->
+            viewModel.isSearchViewActive = newState == SearchView.TransitionState.SHOWING ||
+                    newState == SearchView.TransitionState.SHOWN
+
+            // When search view is hidden, reset search mode if active
+            if (newState == SearchView.TransitionState.HIDDEN && viewModel.isInSearchMode) {
+                viewModel.isInSearchMode = false
+                adapter.updateItems(viewModel.movies)
+            }
+        }
+
+        // Restore search state after configuration change
+        restoreSearchState()
+    }
+
+    private fun restoreSearchState() {
+        // If we had an active search before configuration change
+        if (viewModel.isSearchViewActive) {
+            binding.searchBar.setText(viewModel.currentSearchQuery)
+            binding.searchView.show()
+
+            // Restore search results
+            if (viewModel.isInSearchMode && viewModel.searchResults.isNotEmpty()) {
+                searchAdapter.updateItems(viewModel.searchResults)
             }
         }
     }
@@ -117,6 +147,9 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
             query, TmdbService.getApiKey(), TmdbService.create(),
             onSuccess = { searchResults ->
                 hideLoadingSpinner()
+                // Store results in ViewModel for configuration changes
+                viewModel.searchResults.clear()
+                viewModel.searchResults.addAll(searchResults)
                 // Update the search adapter with results
                 searchAdapter.updateItems(searchResults)
             },
@@ -152,7 +185,10 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
                 binding.recyclerView.visibility = View.VISIBLE
 
                 // Log success to verify data loaded
-                Log.d("FilmsAndSeriesFragment", "Updated adapter with ${viewModel.movies.size} items")
+                Log.d(
+                    "FilmsAndSeriesFragment",
+                    "Updated adapter with ${viewModel.movies.size} items"
+                )
             }
         }, {
             hideLoadingSpinner()
