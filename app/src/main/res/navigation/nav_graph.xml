@@ -28,7 +28,14 @@
         android:id="@+id/nav_liked"
         android:name="com.example.movietracker.fragment.liked.LikedFragment"
         android:label="Liked"
-        tools:layout="@layout/fragment_liked" />
+        tools:layout="@layout/fragment_liked">
+    <action
+        android:id="@+id/action_inspect_movie"
+        app:destination="@id/nav_inspect_movie" />
+    <action
+        android:id="@+id/action_inspect_tv_show"
+        app:destination="@id/nav_inspect_tv_show" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_inspect_movie"
