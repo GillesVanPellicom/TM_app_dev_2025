@@ -9,8 +9,6 @@ import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Button
-import androidx.fragment.app.Fragment
-
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -18,14 +16,11 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
-import androidx.room.Room
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.example.movietracker.database.AppDatabase
 import com.example.movietracker.databinding.ActivityMainBinding
-import kotlin.text.get
-import kotlin.text.set
-import kotlin.times
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,20 +36,15 @@ class MainActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-
-    database = Room.databaseBuilder(
-      applicationContext,
-      AppDatabase::class.java,
-      "app-database"
-    ).build()
-
     binding = ActivityMainBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
-    // Set up the NavController with the BottomNavigationView
-    val navHostFragment =
-      supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-    navController = navHostFragment.navController
+    // Initialize Room database
+    database = androidx.room.Room.databaseBuilder(
+      applicationContext,
+      AppDatabase::class.java,
+      "movie-tracker-database"
+    ).build()
 
     // Handle top padding to take system bar into account
     ViewCompat.setOnApplyWindowInsetsListener(binding.navHostFragment) { view, insets ->
@@ -63,7 +53,22 @@ class MainActivity : AppCompatActivity() {
       insets
     }
 
-    NavigationUI.setupWithNavController(binding.bottomNav, navController)
+    // Get NavController properly from the NavHostFragment
+    val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
+        as androidx.navigation.fragment.NavHostFragment
+    navController = navHostFragment.navController
+
+    // Setup bottom navigation with NavController
+    binding.bottomNav.setupWithNavController(navController)
+
+    // Handle tab reselection to pop back to tab's root page
+    binding.bottomNav.setOnItemReselectedListener { menuItem ->
+      when (menuItem.itemId) {
+        R.id.nav_home -> navController.popBackStack(R.id.nav_home, false)
+        R.id.nav_films_and_series -> navController.popBackStack(R.id.nav_films_and_series, false)
+        R.id.nav_liked -> navController.popBackStack(R.id.nav_liked, false)
+      }
+    }
 
     // Destination change listener to handle navigation
     navController.addOnDestinationChangedListener { _, destination, arguments ->
