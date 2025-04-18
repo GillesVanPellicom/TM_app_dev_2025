@@ -1,7 +1,17 @@
 package com.example.movietracker
 
+import android.app.Dialog
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
+import android.widget.Button
+import androidx.fragment.app.Fragment
+
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -71,8 +81,40 @@ class MainActivity : AppCompatActivity() {
     fun setupRetryButton(reloadButton: View, reloadFunction: () -> Unit) {
         reloadButton.setOnClickListener {
             hideReloadButton()
-            showLoadingSpinner() 
+            showLoadingSpinner()
             reloadFunction()
         }
+    }
+
+    fun showErrorDialog() {
+        val dialog = Dialog(this, android.R.style.Theme_Material_Dialog)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+
+        // Set full-screen layout parameters
+        dialog.window?.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT
+        )
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        // Inflate a layout for Material 3 dialog content
+        val dialogView = LayoutInflater.from(this).inflate(
+            R.layout.dialog_fullscreen_error,
+            dialog.window?.decorView?.rootView as? ViewGroup,
+            false
+        )
+        dialog.setContentView(dialogView)
+
+        // Configure views
+        dialogView.findViewById<TextView>(R.id.dialog_title).text = getString(R.string.ed_title)
+        dialogView.findViewById<TextView>(R.id.dialog_message).text = getString(R.string.ed_text)
+        dialogView.findViewById<ImageView>(R.id.dialog_icon)
+            .setImageResource(R.drawable.ic_error)
+        dialogView.findViewById<Button>(R.id.dialog_button_ok).setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 }

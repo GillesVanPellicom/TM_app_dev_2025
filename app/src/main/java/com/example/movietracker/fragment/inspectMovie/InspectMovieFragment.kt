@@ -143,31 +143,7 @@ class InspectMovieFragment : Fragment(R.layout.fragment_inspect_movie) {
 
                 if (!isAdded) return // Ensure the fragment is still attached
 
-                val dialog = Dialog(requireContext(), android.R.style.Theme_Material_Dialog)
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-                dialog.setCancelable(true)
-
-                dialog.window?.setLayout(
-                    WindowManager.LayoutParams.MATCH_PARENT,
-                    WindowManager.LayoutParams.MATCH_PARENT
-                )
-                dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-
-                val dialogView = LayoutInflater.from(requireContext()).inflate(
-                    R.layout.dialog_fullscreen_error,
-                    null
-                )
-                dialog.setContentView(dialogView)
-
-                dialogView.findViewById<TextView>(R.id.dialog_title).text = getString(R.string.ed_title)
-                dialogView.findViewById<TextView>(R.id.dialog_message).text = getString(R.string.ed_text)
-                    dialogView.findViewById<ImageView>(R.id.dialog_icon)
-                    .setImageResource(R.drawable.ic_error)
-                dialogView.findViewById<Button>(R.id.dialog_button_ok).setOnClickListener {
-                    dialog.dismiss()
-                }
-
-                dialog.show()
+                showErrorDialog()
             }
         })
     }
@@ -198,5 +174,9 @@ class InspectMovieFragment : Fragment(R.layout.fragment_inspect_movie) {
 
     private fun hideReloadButton() {
         (requireActivity() as? MainActivity)?.hideReloadButton()
+    }
+
+    private fun showErrorDialog() {
+        (requireActivity() as? MainActivity)?.showErrorDialog()
     }
 }

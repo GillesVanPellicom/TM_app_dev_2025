@@ -134,22 +134,8 @@ class InspectTvShowFragment : Fragment(R.layout.fragment_inspect_tv_show) {
             override fun onFailure(call: Call<TvShowResponse>, t: Throwable) {
                 hideLoadingSpinner()
                 showReloadButton()
+                showErrorDialog()
                 if (!isAdded) return
-
-                val dialog = Dialog(requireContext(), android.R.style.Theme_Material_Dialog)
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-                dialog.setCancelable(true)
-                dialog.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)
-                dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-
-                val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_fullscreen_error, null)
-                dialog.setContentView(dialogView)
-
-                dialogView.findViewById<TextView>(R.id.dialog_title).text = getString(R.string.ed_title)
-                dialogView.findViewById<TextView>(R.id.dialog_message).text = getString(R.string.ed_text)
-                dialogView.findViewById<ImageView>(R.id.dialog_icon).setImageResource(R.drawable.ic_error)
-                dialogView.findViewById<Button>(R.id.dialog_button_ok).setOnClickListener { dialog.dismiss() }
-                dialog.show()
             }
         })
     }
@@ -175,5 +161,9 @@ class InspectTvShowFragment : Fragment(R.layout.fragment_inspect_tv_show) {
 
     private fun showReloadButton() {
         (requireActivity() as? MainActivity)?.showReloadButton()
+    }
+
+    private fun showErrorDialog() {
+        (requireActivity() as? MainActivity)?.showErrorDialog()
     }
 }

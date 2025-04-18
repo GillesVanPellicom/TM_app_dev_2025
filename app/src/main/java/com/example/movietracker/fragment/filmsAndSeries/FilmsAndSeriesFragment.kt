@@ -104,34 +104,6 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
     }
 
     private fun showErrorDialog() {
-        val dialog = Dialog(requireContext(), android.R.style.Theme_Material_Dialog)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(true)
-
-        // Set full-screen layout parameters
-        dialog.window?.setLayout(
-            WindowManager.LayoutParams.MATCH_PARENT,
-            WindowManager.LayoutParams.MATCH_PARENT
-        )
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-
-        // Inflate a layout for Material 3 dialog content
-        val dialogView = LayoutInflater.from(requireContext()).inflate(
-            R.layout.dialog_fullscreen_error,
-            dialog.window?.decorView?.rootView as? ViewGroup,
-            false
-        )
-        dialog.setContentView(dialogView)
-
-        // Configure views
-        dialogView.findViewById<TextView>(R.id.dialog_title).text = getString(R.string.ed_title)
-        dialogView.findViewById<TextView>(R.id.dialog_message).text = getString(R.string.ed_text)
-        dialogView.findViewById<ImageView>(R.id.dialog_icon)
-            .setImageResource(R.drawable.ic_error)
-        dialogView.findViewById<Button>(R.id.dialog_button_ok).setOnClickListener {
-            dialog.dismiss()
-        }
-
-        dialog.show()
+        (requireActivity() as? MainActivity)?.showErrorDialog()
     }
 }
