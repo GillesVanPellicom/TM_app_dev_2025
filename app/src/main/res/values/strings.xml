@@ -28,4 +28,10 @@
     <string name="number_of_episodes">Number of Episodes</string>
     <string name="created_by">Created By</string>
     <string name="networks">Networks</string>
+
+
+    <!-- Error dialogue-->
+    <string name="ed_title">An issue occurred</string>
+    <string name="ed_text">Something went wrong while loading.\nThis could be due to a network issue.\nPlease check your internet connection, and if the problem persists, \nplease try again later.</string>
+
 </resources>

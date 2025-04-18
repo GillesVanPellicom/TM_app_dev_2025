@@ -159,10 +159,9 @@ class InspectMovieFragment : Fragment(R.layout.fragment_inspect_movie) {
                 )
                 dialog.setContentView(dialogView)
 
-                dialogView.findViewById<TextView>(R.id.dialog_title).text = "An issue occurred"
-                dialogView.findViewById<TextView>(R.id.dialog_message).text =
-                    "Something went wrong while loading.\nThis could be due to a network issue.\nPlease check your internet connection, and if the problem persists, \nplease try again later."
-                dialogView.findViewById<ImageView>(R.id.dialog_icon)
+                dialogView.findViewById<TextView>(R.id.dialog_title).text = getString(R.string.ed_title)
+                dialogView.findViewById<TextView>(R.id.dialog_message).text = getString(R.string.ed_text)
+                    dialogView.findViewById<ImageView>(R.id.dialog_icon)
                     .setImageResource(R.drawable.ic_error)
                 dialogView.findViewById<Button>(R.id.dialog_button_ok).setOnClickListener {
                     dialog.dismiss()

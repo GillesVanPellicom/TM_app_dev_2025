@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Button
@@ -117,14 +118,14 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
         // Inflate a layout for Material 3 dialog content
         val dialogView = LayoutInflater.from(requireContext()).inflate(
             R.layout.dialog_fullscreen_error,
-            null
+            dialog.window?.decorView?.rootView as? ViewGroup,
+            false
         )
         dialog.setContentView(dialogView)
 
         // Configure views
-        dialogView.findViewById<TextView>(R.id.dialog_title).text = "An issue occurred"
-        dialogView.findViewById<TextView>(R.id.dialog_message).text =
-            "Something went wrong while loading.\nThis could be due to a network issue.\nPlease check your internet connection, and if the problem persists, \nplease try again later."
+        dialogView.findViewById<TextView>(R.id.dialog_title).text = getString(R.string.ed_title)
+        dialogView.findViewById<TextView>(R.id.dialog_message).text = getString(R.string.ed_text)
         dialogView.findViewById<ImageView>(R.id.dialog_icon)
             .setImageResource(R.drawable.ic_error)
         dialogView.findViewById<Button>(R.id.dialog_button_ok).setOnClickListener {
