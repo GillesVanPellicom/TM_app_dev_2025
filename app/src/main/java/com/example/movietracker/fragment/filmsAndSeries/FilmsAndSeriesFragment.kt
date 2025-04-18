@@ -26,6 +26,8 @@ import com.example.movietracker.itemList.ItemAdapter
 import com.google.android.material.search.SearchView
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import kotlin.text.clear
+import kotlin.text.compareTo
 import kotlin.toString
 
 class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
@@ -99,14 +101,20 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
         }
 
         // Handle SearchView state changes
-        binding.searchView.addTransitionListener { _, _, newState ->
+        binding.searchView.addTransitionListener { _, previousState, newState ->
+            // Update search state in ViewModel
             viewModel.isSearchViewActive = newState == SearchView.TransitionState.SHOWING ||
                     newState == SearchView.TransitionState.SHOWN
 
-            // When search view is hidden, reset search mode if active
-            if (newState == SearchView.TransitionState.HIDDEN && viewModel.isInSearchMode) {
+            // When search view is hidden, properly reset search state
+            if (newState == SearchView.TransitionState.HIDDEN) {
                 viewModel.isInSearchMode = false
                 adapter.updateItems(viewModel.movies)
+
+                // Clear search results when exiting search
+                viewModel.searchResults.clear()
+
+                Log.d("FilmsAndSeriesFragment", "Search dismissed - resetting search mode")
             }
         }
 
@@ -115,15 +123,20 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
     }
 
     private fun restoreSearchState() {
-        // If we had an active search before configuration change
         if (viewModel.isSearchViewActive) {
             binding.searchBar.setText(viewModel.currentSearchQuery)
+
+            // Make sure search mode is properly set based on whether we have results
+            viewModel.isInSearchMode = viewModel.searchResults.isNotEmpty()
+
             binding.searchView.show()
 
-            // Restore search results
-            if (viewModel.isInSearchMode && viewModel.searchResults.isNotEmpty()) {
+            if (viewModel.searchResults.isNotEmpty()) {
                 searchAdapter.updateItems(viewModel.searchResults)
             }
+        } else {
+            // Ensure we're not in search mode when not searching
+            viewModel.isInSearchMode = false
         }
     }
 
@@ -131,10 +144,15 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (!viewModel.isLoading &&
-                    !viewModel.isInSearchMode &&
-                    layoutManager.findLastVisibleItemPosition() == viewModel.movies.size - 1
-                ) {
+
+                val lastVisiblePosition = layoutManager.findLastVisibleItemPosition()
+                // Load when approaching the end (3 items before) instead of exactly at the end
+                val shouldLoad = !viewModel.isLoading &&
+                        !viewModel.isInSearchMode &&
+                        lastVisiblePosition >= viewModel.movies.size - 3
+
+                if (shouldLoad) {
+                    Log.d("FilmsAndSeriesFragment", "Loading more trending items")
                     fetchTrendingMovies()
                 }
             }
@@ -177,18 +195,18 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
         viewModel.fetchTrendingMovies(TmdbService.getApiKey(), TmdbService.create(), { newMovies ->
             hideLoadingSpinner()
 
-            // Force UI update on the main thread
+            // Use a handler to ensure the UI update happens after the current frame is drawn
             binding.recyclerView.post {
-                adapter.updateItems(viewModel.movies)
+                if (isAdded) {
+                    // Create a copy of the list to ensure adapter recognizes it as new data
+                    val updatedList = ArrayList(viewModel.movies)
+                    adapter.updateItems(updatedList)
 
-                // Make sure recyclerView is visible
-                binding.recyclerView.visibility = View.VISIBLE
+                    // Request layout to ensure scrolling calculations are updated
+                    binding.recyclerView.requestLayout()
 
-                // Log success to verify data loaded
-                Log.d(
-                    "FilmsAndSeriesFragment",
-                    "Updated adapter with ${viewModel.movies.size} items"
-                )
+                    Log.d("FilmsAndSeriesFragment", "Updated adapter with ${viewModel.movies.size} items")
+                }
             }
         }, {
             hideLoadingSpinner()
