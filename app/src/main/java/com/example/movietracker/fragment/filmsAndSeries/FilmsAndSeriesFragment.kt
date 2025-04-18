@@ -73,14 +73,7 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
     private fun fetchTrendingMovies() {
         showLoadingSpinner()
 
-        val apiKey = "140b81b85e8e8baf9d417e99a3c9ab7e"
-        val service = Retrofit.Builder()
-            .baseUrl("https://api.themoviedb.org/3/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(TmdbService::class.java)
-
-        viewModel.fetchTrendingMovies(apiKey, service, { newMovies ->
+        viewModel.fetchTrendingMovies(TmdbService.getApiKey(), TmdbService.create(), { newMovies ->
             val startPosition = viewModel.movies.size - newMovies.size
             binding.recyclerView.adapter?.notifyItemRangeInserted(startPosition, newMovies.size)
             hideLoadingSpinner()

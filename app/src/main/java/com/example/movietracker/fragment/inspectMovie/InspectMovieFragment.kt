@@ -116,14 +116,9 @@ class InspectMovieFragment : Fragment(R.layout.fragment_inspect_movie) {
     private fun fetchMovieDetails(movieId: Int) {
         showLoadingSpinner()
 
-        val apiKey = "140b81b85e8e8baf9d417e99a3c9ab7e"
-        val service = Retrofit.Builder()
-            .baseUrl("https://api.themoviedb.org/3/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(TmdbService::class.java)
+        val service = TmdbService.create()
 
-        service.getMovie(movieId, apiKey).enqueue(object : Callback<MovieResponse> {
+        service.getMovie(movieId, TmdbService.getApiKey()).enqueue(object : Callback<MovieResponse> {
             override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
                 hideLoadingSpinner()
                 if (!isAdded) return // Ensure the fragment is still attached

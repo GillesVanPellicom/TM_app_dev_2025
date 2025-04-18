@@ -112,14 +112,9 @@ class InspectTvShowFragment : Fragment(R.layout.fragment_inspect_tv_show) {
     private fun fetchTvShowDetails(tvShowId: Int) {
         showLoadingSpinner()
 
-        val apiKey = "140b81b85e8e8baf9d417e99a3c9ab7e"
-        val service = Retrofit.Builder()
-            .baseUrl("https://api.themoviedb.org/3/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(TmdbService::class.java)
+        val service = TmdbService.create()
 
-        service.getTvShow(tvShowId, apiKey).enqueue(object : Callback<TvShowResponse> {
+        service.getTvShow(tvShowId, TmdbService.getApiKey()).enqueue(object : Callback<TvShowResponse> {
             override fun onResponse(call: Call<TvShowResponse>, response: Response<TvShowResponse>) {
                 hideLoadingSpinner()
                 if (!isAdded) return

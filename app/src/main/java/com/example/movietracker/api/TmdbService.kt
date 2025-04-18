@@ -2,11 +2,16 @@ package com.example.movietracker.api
 
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface TmdbService {
+
+
+
     @GET("trending/all/day")
     fun getTrending(
         @Query("api_key") apiKey: String,
@@ -31,6 +36,21 @@ interface TmdbService {
         @Query("query") query: String,
         @Query("page") page: Int
     ): Call<TrendingResponse>
+
+    companion object {
+        private const val BASE_URL = "https://api.themoviedb.org/3/"
+        private const val API_KEY = "140b81b85e8e8baf9d417e99a3c9ab7e"
+
+        fun create(): TmdbService {
+            return Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(TmdbService::class.java)
+        }
+
+        fun getApiKey(): String = API_KEY
+    }
 }
 
 data class TrendingResponse(
