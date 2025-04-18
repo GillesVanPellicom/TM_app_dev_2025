@@ -91,16 +91,16 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
         })
     }
 
-    private fun showLoadingSpinner() {
-        (requireActivity() as? MainActivity)?.showLoadingSpinner()
+    private fun showLoadingSpinner(hideBackground: Boolean = false) {
+        (requireActivity() as? MainActivity)?.showLoadingSpinner(hideBackground)
     }
 
     private fun hideLoadingSpinner() {
         (requireActivity() as? MainActivity)?.hideLoadingSpinner()
     }
 
-    private fun showReloadButton() {
-        (requireActivity() as? MainActivity)?.showReloadButton()
+    private fun showReloadButton(hideBackground: Boolean = false) {
+        (requireActivity() as? MainActivity)?.showReloadButton(hideBackground)
     }
 
     private fun showErrorDialog() {

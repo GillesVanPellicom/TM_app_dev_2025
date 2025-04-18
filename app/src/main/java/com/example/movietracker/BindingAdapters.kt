@@ -11,6 +11,7 @@ import com.example.movietracker.api.Network
 import com.example.movietracker.api.ProductionCompany
 import com.example.movietracker.api.ProductionCountry
 import com.example.movietracker.api.SpokenLanguage
+import java.util.Locale
 import kotlin.collections.joinToString
 
 @BindingAdapter("imageUrl")
@@ -47,7 +48,7 @@ fun setRuntimeText(view: TextView, runtime: Int?) {
     if (runtime != null) {
         val hours = runtime / 60
         val minutes = runtime % 60
-        view.text = "${hours}h ${minutes}m"
+        view.text = view.context.getString(R.string.binding_runtimeText, hours, minutes)
     } else {
         view.text = ""
     }
@@ -56,7 +57,10 @@ fun setRuntimeText(view: TextView, runtime: Int?) {
 @BindingAdapter("moneyText")
 fun setMoneyText(view: TextView, amount: Int?) {
     if (amount != null && amount > 0) {
-        view.text = "$${String.format("%,d", amount)}"
+        view.text = view.context.getString(
+            R.string.binding_moneyText,
+            String.format(Locale.US, "%,d", amount)
+        )
         view.visibility = View.VISIBLE
     } else {
         view.visibility = View.GONE

@@ -160,20 +160,16 @@ class InspectMovieFragment : Fragment(R.layout.fragment_inspect_movie) {
         }
     }
 
-    private fun showLoadingSpinner() {
-        (requireActivity() as? MainActivity)?.showLoadingSpinner()
+    private fun showLoadingSpinner(hideBackground: Boolean = true) {
+        (requireActivity() as? MainActivity)?.showLoadingSpinner(hideBackground)
     }
 
     private fun hideLoadingSpinner() {
         (requireActivity() as? MainActivity)?.hideLoadingSpinner()
     }
 
-    private fun showReloadButton() {
-        (requireActivity() as? MainActivity)?.showReloadButton()
-    }
-
-    private fun hideReloadButton() {
-        (requireActivity() as? MainActivity)?.hideReloadButton()
+    private fun showReloadButton(hideBackground: Boolean = true) {
+        (requireActivity() as? MainActivity)?.showReloadButton(hideBackground)
     }
 
     private fun showErrorDialog() {

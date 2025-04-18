@@ -60,22 +60,40 @@ class MainActivity : AppCompatActivity() {
 
         // Set up the bottom navigation with the NavController
         NavigationUI.setupWithNavController(binding.bottomNav, navController)
+
+        // Add a destination change listener to update the active state
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.nav_home -> binding.bottomNav.menu.findItem(R.id.nav_home).isChecked = true
+                R.id.nav_films_and_series -> binding.bottomNav.menu.findItem(R.id.nav_films_and_series).isChecked = true
+                R.id.nav_liked -> binding.bottomNav.menu.findItem(R.id.nav_liked).isChecked = true
+                R.id.nav_inspect_movie, R.id.nav_inspect_tv_show -> {
+                    // Keep the Films & Series button active for these destinations
+                    binding.bottomNav.menu.findItem(R.id.nav_films_and_series).isChecked = true
+                }
+            }
+        }
     }
 
-    fun showLoadingSpinner() {
+    fun showLoadingSpinner(hideBackground: Boolean = false) {
         binding.progressBarContainer.visibility = View.VISIBLE
+        if (hideBackground) binding.navHostFragment.visibility = View.GONE
+
     }
 
     fun hideLoadingSpinner() {
         binding.progressBarContainer.visibility = View.GONE
+        binding.navHostFragment.visibility = View.VISIBLE
     }
 
-    fun showReloadButton() {
+    fun showReloadButton(hideBackground: Boolean = false) {
         binding.reloadButtonContainer.visibility = View.VISIBLE
+        if (hideBackground) binding.navHostFragment.visibility = View.GONE
     }
 
     fun hideReloadButton() {
         binding.reloadButtonContainer.visibility = View.GONE
+        binding.navHostFragment.visibility = View.VISIBLE
     }
 
     fun setupRetryButton(reloadButton: View, reloadFunction: () -> Unit) {
