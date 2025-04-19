@@ -1,6 +1,7 @@
 package com.example.movietracker.fragment.liked
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
@@ -22,10 +23,18 @@ class LikedFragment : Fragment(R.layout.fragment_liked) {
   private val viewModel: LikedViewModel by viewModels()
   private lateinit var adapter: ItemAdapter
   private lateinit var searchAdapter: ItemAdapter
+  private var recyclerViewState: Parcelable? = null
+  private var searchRecyclerViewState: Parcelable? = null
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     binding = FragmentLikedBinding.bind(view)
+
+    // Restore scroll state if available
+    if (savedInstanceState != null) {
+      recyclerViewState = savedInstanceState.getParcelable("RECYCLER_VIEW_STATE", Parcelable::class.java)
+      searchRecyclerViewState = savedInstanceState.getParcelable("SEARCH_RECYCLER_VIEW_STATE", Parcelable::class.java)
+    }
 
     // Setup RecyclerView
     setupRecyclerView()
@@ -106,6 +115,10 @@ class LikedFragment : Fragment(R.layout.fragment_liked) {
 
       if (viewModel.isInSearchMode && viewModel.searchResults.isNotEmpty()) {
         searchAdapter.updateItems(viewModel.searchResults)
+
+        // Restore search recycler view position
+        val searchRecyclerView = binding.searchView.findViewById<RecyclerView>(R.id.searchResultsRecyclerView)
+        searchRecyclerViewState?.let { searchRecyclerView.layoutManager?.onRestoreInstanceState(it) }
       }
     }
   }
@@ -139,10 +152,16 @@ class LikedFragment : Fragment(R.layout.fragment_liked) {
       binding.emptyStateText.visibility = View.GONE
       binding.recyclerView.visibility = View.VISIBLE
       adapter.updateItems(viewModel.items)
+
+      // Restore scroll position after data is set
+      recyclerViewState?.let { binding.recyclerView.layoutManager?.onRestoreInstanceState(it) }
     }
   }
 
   private fun performSearch(query: String) {
+    // Clear previous search state since we're starting a new search
+    searchRecyclerViewState = null
+
     viewModel.isInSearchMode = true
     val filteredItems = viewModel.filterItems(query)
     viewModel.searchResults.clear()
@@ -159,6 +178,22 @@ class LikedFragment : Fragment(R.layout.fragment_liked) {
       findNavController().navigate(R.id.action_inspect_movie, bundle)
     } else {
       findNavController().navigate(R.id.action_inspect_tv_show, bundle)
+    }
+  }
+
+  override fun onSaveInstanceState(outState: Bundle) {
+    super.onSaveInstanceState(outState)
+
+    // Only try to save state if binding is initialized
+    if (::binding.isInitialized) {
+      // Save main RecyclerView state
+      recyclerViewState = binding.recyclerView.layoutManager?.onSaveInstanceState()
+      outState.putParcelable("RECYCLER_VIEW_STATE", recyclerViewState)
+
+      // Save search RecyclerView state
+      val searchRecyclerView = binding.searchView.findViewById<RecyclerView>(R.id.searchResultsRecyclerView)
+      searchRecyclerViewState = searchRecyclerView.layoutManager?.onSaveInstanceState()
+      outState.putParcelable("SEARCH_RECYCLER_VIEW_STATE", searchRecyclerViewState)
     }
   }
 }

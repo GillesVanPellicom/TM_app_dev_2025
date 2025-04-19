@@ -19,8 +19,6 @@ import androidx.navigation.NavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.movietracker.database.AppDatabase
 import com.example.movietracker.databinding.ActivityMainBinding
-import android.graphics.Color
-import android.util.TypedValue
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 

@@ -1,6 +1,7 @@
 package com.example.movietracker.fragment.filmsAndSeries
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -22,6 +23,8 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
   private val viewModel: FilmsAndSeriesViewModel by viewModels()
   private lateinit var adapter: ItemAdapter
   private lateinit var searchAdapter: ItemAdapter
+  private var recyclerViewState: Parcelable? = null
+  private var searchRecyclerViewState: Parcelable? = null
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -42,14 +45,26 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
       (requireActivity() as MainActivity).binding.reloadButton
     ) { fetchTrendingMovies() }
 
+    // Restore scroll state if available using new API (API 33+)
+    if (savedInstanceState != null) {
+      recyclerViewState = savedInstanceState.getParcelable("RECYCLER_VIEW_STATE", Parcelable::class.java)
+      searchRecyclerViewState = savedInstanceState.getParcelable("SEARCH_RECYCLER_VIEW_STATE", Parcelable::class.java)
+    }
+
     // Set up search
     setupSearch()
 
     // Setup infinite scroll
     setupInfiniteScroll(layoutManager)
 
-    // Always fetch initial data - remove the check for empty movies list
-    fetchTrendingMovies()
+    // Restore data to adapters (if already fetched)
+    if (viewModel.movies.isNotEmpty()) {
+      adapter.updateItems(viewModel.movies)
+      // Restore scroll position after data is set
+      recyclerViewState?.let { binding.recyclerView.layoutManager?.onRestoreInstanceState(it) }
+    } else {
+      fetchTrendingMovies()
+    }
   }
 
   private fun setupSearch() {
@@ -120,6 +135,9 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
 
       if (viewModel.searchResults.isNotEmpty()) {
         searchAdapter.updateItems(viewModel.searchResults)
+        // Restore search recycler view position
+        val searchRecyclerView = binding.searchView.findViewById<RecyclerView>(R.id.searchResultsRecyclerView)
+        searchRecyclerViewState?.let { searchRecyclerView.layoutManager?.onRestoreInstanceState(it) }
       }
     } else {
       // Ensure we're not in search mode when not searching
@@ -201,6 +219,22 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
       showReloadButton()
       showErrorDialog()
     })
+  }
+
+  override fun onSaveInstanceState(outState: Bundle) {
+    super.onSaveInstanceState(outState)
+
+    // Only try to save state if binding is initialized
+    if (::binding.isInitialized) {
+      // Save main RecyclerView state
+      recyclerViewState = binding.recyclerView.layoutManager?.onSaveInstanceState()
+      outState.putParcelable("RECYCLER_VIEW_STATE", recyclerViewState)
+
+      // Save search RecyclerView state
+      val searchRecyclerView = binding.searchView.findViewById<RecyclerView>(R.id.searchResultsRecyclerView)
+      searchRecyclerViewState = searchRecyclerView.layoutManager?.onSaveInstanceState()
+      outState.putParcelable("SEARCH_RECYCLER_VIEW_STATE", searchRecyclerViewState)
+    }
   }
 
   private fun showLoadingSpinner(hideBackground: Boolean = false) {
