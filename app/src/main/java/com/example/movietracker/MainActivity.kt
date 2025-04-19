@@ -16,10 +16,13 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.movietracker.database.AppDatabase
 import com.example.movietracker.databinding.ActivityMainBinding
+import android.graphics.Color
+import android.util.TypedValue
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 
 
 class MainActivity : AppCompatActivity() {
@@ -52,6 +55,10 @@ class MainActivity : AppCompatActivity() {
       view.updatePadding(top = systemBarsInsets.top)
       insets
     }
+
+    // Set system bar colors for cross compatibility
+    setupSystemBars()
+
 
     // Get NavController properly from the NavHostFragment
     val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
@@ -136,6 +143,7 @@ class MainActivity : AppCompatActivity() {
     }
   }
 
+
   fun showErrorDialog() {
     val dialog = Dialog(this, android.R.style.Theme_Material_Dialog)
     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -166,5 +174,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     dialog.show()
+  }
+
+  private fun setupSystemBars() {
+    // Make the app draw behind system bars (edge-to-edge)
+    WindowCompat.setDecorFitsSystemWindows(window, false)
+
+    // Get WindowInsetsController
+    val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
+
+    // Determine dark mode status
+    val nightModeFlags = resources.configuration.uiMode and
+        android.content.res.Configuration.UI_MODE_NIGHT_MASK
+    val isNightMode = nightModeFlags == android.content.res.Configuration.UI_MODE_NIGHT_YES
+
+    // Set light/dark appearance based on theme
+    windowInsetsController.isAppearanceLightStatusBars = !isNightMode
+    windowInsetsController.isAppearanceLightNavigationBars = !isNightMode
+
+    // Optional: For a more integrated look, add this line
+    windowInsetsController.systemBarsBehavior =
+      WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
   }
 }
