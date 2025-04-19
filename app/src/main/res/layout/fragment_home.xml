@@ -1,20 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-  <androidx.constraintlayout.widget.ConstraintLayout
-      android:layout_width="match_parent"
-      android:layout_height="match_parent">
+  <com.google.android.material.card.MaterialCardView
+      android:id="@+id/welcome_card"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_margin="16dp"
+      app:cardBackgroundColor="?attr/colorPrimaryContainer"
+      app:cardCornerRadius="16dp"
+      app:cardElevation="4dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintBottom_toTopOf="@+id/feature_card"
+      app:layout_constraintVertical_chainStyle="packed">
 
-    <Button
-        android:id="@+id/navigateButton"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/home_go_to_home_fragment"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical"
+        android:padding="24dp">
 
-  </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="Welcome to"
+          android:textAppearance="?attr/textAppearanceHeadlineSmall"
+          android:textColor="?attr/colorOnPrimaryContainer" />
+
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="Movie Tracker"
+          android:textAppearance="?attr/textAppearanceHeadlineLarge"
+          android:textColor="?attr/colorOnPrimaryContainer"
+          android:textStyle="bold" />
+    </LinearLayout>
+  </com.google.android.material.card.MaterialCardView>
+
+  <com.google.android.material.card.MaterialCardView
+      android:id="@+id/feature_card"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_margin="16dp"
+      app:cardBackgroundColor="?attr/colorSecondaryContainer"
+      app:cardCornerRadius="16dp"
+      app:cardElevation="4dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/welcome_card">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="Discover and track your favorite movies and TV shows"
+          android:textAlignment="center"
+          android:textAppearance="?attr/textAppearanceBodyLarge"
+          android:textColor="?attr/colorOnSecondaryContainer" />
+
+
+      <ImageView
+          android:layout_width="120dp"
+          android:layout_height="120dp"
+          android:layout_gravity="center_horizontal"
+          android:layout_marginTop="16dp"
+          android:contentDescription="Movie icon"
+          android:src="@drawable/ic_film"
+          app:tint="?attr/colorOnSecondaryContainer" />
+    </LinearLayout>
+  </com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
