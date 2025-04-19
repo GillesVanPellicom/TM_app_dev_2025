@@ -24,6 +24,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
           showCreditsDialog()
           true
         }
+        R.id.menu_project_info -> {
+          showProjectDialog()
+          true
+        }
         else -> false
       }
     }
@@ -53,6 +57,36 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     dialogView.findViewById<TextView>(R.id.dialog_title).text = getString(R.string.cdiag_title)
     dialogView.findViewById<TextView>(R.id.dialog_message).text = getString(R.string.cdiag_text)
     dialogView.findViewById<ImageView>(R.id.dialog_icon).setImageResource(R.drawable.ic_person)
+    dialogView.findViewById<Button>(R.id.dialog_button_ok).setOnClickListener {
+      dialog.dismiss()
+    }
+    dialog.show()
+  }
+
+  private fun showProjectDialog() {
+    val dialog = Dialog(requireContext(), android.R.style.Theme_Material_Dialog)
+    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+    dialog.setCancelable(true)
+
+    // Set full-screen layout parameters.
+    dialog.window?.setLayout(
+      WindowManager.LayoutParams.MATCH_PARENT,
+      WindowManager.LayoutParams.MATCH_PARENT
+    )
+    dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+    // Inflate dialog content.
+    val dialogView = LayoutInflater.from(requireContext()).inflate(
+      R.layout.dialog_fullscreen,
+      dialog.window?.decorView?.rootView as? ViewGroup,
+      false
+    )
+    dialog.setContentView(dialogView)
+
+    // Configure views.
+    dialogView.findViewById<TextView>(R.id.dialog_title).text = getString(R.string.pdiag_title)
+    dialogView.findViewById<TextView>(R.id.dialog_message).text = getString(R.string.pdiag_text)
+    dialogView.findViewById<ImageView>(R.id.dialog_icon).setImageResource(R.drawable.ic_info)
     dialogView.findViewById<Button>(R.id.dialog_button_ok).setOnClickListener {
       dialog.dismiss()
     }

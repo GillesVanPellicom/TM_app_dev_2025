@@ -6,4 +6,9 @@
       android:title="@string/cdiag_title"
       app:showAsAction="never"
       app:actionLayout="@layout/menu_item_background" />
+  <item
+      android:id="@+id/menu_project_info"
+      android:title="@string/pdiag_title"
+      app:showAsAction="never"
+      app:actionLayout="@layout/menu_item_background" />
 </menu>
