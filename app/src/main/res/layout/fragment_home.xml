@@ -4,6 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+  <com.google.android.material.appbar.MaterialToolbar
+      android:id="@+id/top_app_bar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="?attr/colorSurface"
+      android:theme="@style/ThemeOverlay.Material3.Dark.ActionBar"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:menu="@menu/menu_home"
+      app:titleTextColor="?attr/colorOnSurface" />
+
   <com.google.android.material.card.MaterialCardView
       android:id="@+id/welcome_card"
       android:layout_width="0dp"
@@ -12,10 +24,10 @@
       app:cardBackgroundColor="?attr/colorPrimaryContainer"
       app:cardCornerRadius="16dp"
       app:cardElevation="4dp"
+      app:layout_constraintBottom_toTopOf="@+id/feature_card"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintBottom_toTopOf="@+id/feature_card"
       app:layout_constraintVertical_chainStyle="packed">
 
     <LinearLayout
@@ -46,7 +58,6 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_margin="16dp"
-      app:cardBackgroundColor="?attr/colorSecondaryContainer"
       app:cardCornerRadius="16dp"
       app:cardElevation="4dp"
       app:layout_constraintBottom_toBottomOf="parent"
@@ -75,7 +86,7 @@
           android:layout_gravity="center_horizontal"
           android:layout_marginTop="16dp"
           android:contentDescription="Movie icon"
-          android:src="@drawable/ic_film"
+          android:src="@drawable/ic_star"
           app:tint="?attr/colorOnSecondaryContainer" />
     </LinearLayout>
   </com.google.android.material.card.MaterialCardView>

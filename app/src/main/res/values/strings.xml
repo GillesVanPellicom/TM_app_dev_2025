@@ -34,6 +34,10 @@
   <string name="ed_title">An issue occurred</string>
   <string name="ed_text">Something went wrong while loading.\nThis could be due to a network issue.\nPlease check your internet connection, and if the problem persists, \nplease try again later.</string>
 
+  <!-- Credits dialogue -->
+  <string name="cdiag_title">Credits</string>
+  <string name="cdiag_text">This project was developed as final assignment for the App Development course at Thomas More.\nCreated by Gilles Van pellicom.</string>
+
   <!-- BindingAdapters-->
   <string name="binding_runtimeText">%1$dh %2$dm</string>
   <string name="binding_moneyText">$%1$s</string>

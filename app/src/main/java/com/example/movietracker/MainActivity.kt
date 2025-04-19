@@ -156,7 +156,7 @@ class MainActivity : AppCompatActivity() {
 
     // Inflate a layout for Material 3 dialog content
     val dialogView = LayoutInflater.from(this).inflate(
-      R.layout.dialog_fullscreen_error,
+      R.layout.dialog_fullscreen,
       dialog.window?.decorView?.rootView as? ViewGroup,
       false
     )
