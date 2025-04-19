@@ -36,11 +36,11 @@
 
   <!-- Credits dialogue -->
   <string name="cdiag_title">Credits</string>
-  <string name="cdiag_text">This project was developed as final assignment for the App Development course at Thomas More.\nCreated by Gilles Van pellicom.</string>
+  <string name="cdiag_text">This project was developed as final assignment for the App Development course at Thomas More.\n\nCreated by Gilles Van pellicom.</string>
 
   <!-- Project dialogue -->
-  <string name="pdiag_title">App Polish Info</string>
-  <string name="pdiag_text">\nSince API and DB are used, failed requests result in error dialogue and a reload button appearing.\n\nBottom nav bar active indicator remains accurate even with concurrent back-stacks.\n\nDouble tapping an item in the bottom nav bar returns that back-stack to initial state.\n\nThe loading spinner makes everything in the background un-interactable.</string>
+  <string name="pdiag_title">App Polish</string>
+  <string name="pdiag_text">\nSince API and DB are used, failed requests result in error dialogue and a reload button appearing. Can be tested by disabling network.\n\nBottom nav bar active indicator remains accurate even with concurrent back-stacks.\n\nIf you tap an active item in the bottom nav bar, it returns that back-stack to the initial state.\n\nThe loading spinner and reload button makes everything in the background un-interactable.</string>
 
   <!-- BindingAdapters-->
   <string name="binding_runtimeText">%1$dh %2$dm</string>
