@@ -40,7 +40,7 @@
 
   <!-- Project dialogue -->
   <string name="pdiag_title">App Polish</string>
-  <string name="pdiag_text">\nSince API and DB are used, failed requests result in error dialogue and a reload button appearing. Can be tested by disabling network.\n\nBottom nav bar active indicator remains accurate even with concurrent back-stacks.\n\nIf you tap an active item in the bottom nav bar, it returns that back-stack to the initial state.\n\nThe loading spinner and reload button makes everything in the background un-interactable.</string>
+  <string name="pdiag_text">\nSince API and DB are used, failed requests result in error dialogue and a reload button appearing. Can be tested by disabling network.\n\nBottom nav bar active indicator remains accurate even with concurrent back-stacks.\n\nIf you tap an active item in the bottom nav bar, it returns that back-stack to an initial state.\n\nThe loading spinner and reload button make everything in the background un-interactable. External app inputs such as the back command are also disabled in this state.\n\nMaterial 3 theme system support: light and dark theme OOTB.</string>
 
   <!-- BindingAdapters-->
   <string name="binding_runtimeText">%1$dh %2$dm</string>

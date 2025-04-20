@@ -11,6 +11,7 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -27,6 +28,8 @@ class MainActivity : AppCompatActivity() {
 
   internal lateinit var binding: ActivityMainBinding
   private lateinit var navController: NavController
+  private var isBackDisabled: Boolean = false // Flag to disable back button
+
 
   companion object {
     lateinit var database: AppDatabase
@@ -53,6 +56,17 @@ class MainActivity : AppCompatActivity() {
       view.updatePadding(top = systemBarsInsets.top)
       insets
     }
+
+    // Register OnBackPressedCallback
+    onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+      override fun handleOnBackPressed() {
+        if (!isBackDisabled) {
+          isEnabled = false // Temporarily disable the callback
+          onBackPressedDispatcher.onBackPressed() // Trigger default behavior
+          isEnabled = true // Re-enable the callback
+        }
+      }
+    })
 
     // Set system bar colors for cross compatibility
     setupSystemBars()
@@ -114,22 +128,26 @@ class MainActivity : AppCompatActivity() {
 
   fun showLoadingSpinner(hideBackground: Boolean = false) {
     binding.progressBarContainer.visibility = View.VISIBLE
+    isBackDisabled = true
     if (hideBackground) binding.navHostFragment.visibility = View.GONE
 
   }
 
   fun hideLoadingSpinner() {
     binding.progressBarContainer.visibility = View.GONE
+    isBackDisabled = false
     binding.navHostFragment.visibility = View.VISIBLE
   }
 
   fun showReloadButton(hideBackground: Boolean = false) {
     binding.reloadButtonContainer.visibility = View.VISIBLE
+    isBackDisabled = true
     if (hideBackground) binding.navHostFragment.visibility = View.GONE
   }
 
   fun hideReloadButton() {
     binding.reloadButtonContainer.visibility = View.GONE
+    isBackDisabled = false
     binding.navHostFragment.visibility = View.VISIBLE
   }
 

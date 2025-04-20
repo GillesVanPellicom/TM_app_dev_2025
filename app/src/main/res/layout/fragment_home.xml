@@ -9,12 +9,11 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:background="?attr/colorSurface"
-      android:theme="@style/ThemeOverlay.Material3.Dark.ActionBar"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       app:menu="@menu/menu_home"
-      app:titleTextColor="?attr/colorOnSurface" />
+      app:navigationIconTint="?attr/colorOnSecondaryContainer"/>
 
   <com.google.android.material.card.MaterialCardView
       android:id="@+id/welcome_card"

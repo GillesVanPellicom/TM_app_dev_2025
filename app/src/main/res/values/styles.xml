@@ -10,4 +10,9 @@
     <item name="cornerFamily">rounded</item>
     <item name="cornerSize">8dp</item>
   </style>
+
+  <style name="Widget.AppTheme.Toolbar" parent="Widget.Material3.Toolbar">
+    <item name="navigationIconTint">?attr/colorOnSurface</item>
+    <item name="titleTextColor">?attr/colorOnSurface</item>
+  </style>
 </resources>
