@@ -30,6 +30,8 @@ class MainActivity : AppCompatActivity() {
   private lateinit var navController: NavController
   private var isBackDisabled: Boolean = false // Flag to disable back button
 
+  private var isErrorDialogShown = false // Flag to prevent multiple error dialogs
+
 
   companion object {
     lateinit var database: AppDatabase
@@ -162,6 +164,10 @@ class MainActivity : AppCompatActivity() {
 
 
   fun showErrorDialog() {
+    // Prevent multiple dialogs
+    if (isErrorDialogShown) return
+    isErrorDialogShown = true
+
     val dialog = Dialog(this, android.R.style.Theme_Material_Dialog)
     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
     dialog.setCancelable(true)
@@ -187,6 +193,7 @@ class MainActivity : AppCompatActivity() {
     dialogView.findViewById<ImageView>(R.id.dialog_icon)
       .setImageResource(R.drawable.ic_error)
     dialogView.findViewById<Button>(R.id.dialog_button_ok).setOnClickListener {
+      isErrorDialogShown = false
       dialog.dismiss()
     }
 

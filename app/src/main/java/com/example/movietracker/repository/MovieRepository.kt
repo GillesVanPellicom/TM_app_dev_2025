@@ -28,19 +28,26 @@ class MovieRepository(
     val now = System.currentTimeMillis()
     val freshestTs = cached.maxOfOrNull { it.cachedAt } ?: 0L
 
-    return if (cached.isNotEmpty() && now - freshestTs <= ttlMs) {
-      cached.map { it.toItem() }
+    if (cached.isNotEmpty() && now - freshestTs <= ttlMs) {
+      // Fresh cache hit
+      return cached.map { it.toItem() }
+    }
+
+    // Cache is empty or stale -> try network
+    val networkItems = fetchTrendingFromNetwork(page)
+    return if (networkItems != null) {
+      // Replace page in cache
+      cachedItemDao.clearTrendingPage(page)
+      cachedItemDao.insertAll(networkItems.map { it.toCached(page = page, query = null) })
+      networkItems
     } else {
-      // Fetch from network
-      val networkItems = fetchTrendingFromNetwork(page)
-      if (networkItems != null) {
-        // Replace page in cache
-        cachedItemDao.clearTrendingPage(page)
-        cachedItemDao.insertAll(networkItems.map { it.toCached(page = page, query = null) })
-        networkItems
-      } else {
-        // Network failed -> fallback to cache if any, else empty list
+      // Network failed
+      if (cached.isNotEmpty()) {
+        // Fallback to any cached data available (even if stale)
         cached.map { it.toItem() }
+      } else {
+        // No cache available: surface an error so UI can show reload dialog/state
+        throw OfflineNoCacheException("No internet and no cached trending page $page available")
       }
     }
   }
@@ -50,16 +57,20 @@ class MovieRepository(
     val now = System.currentTimeMillis()
     val freshestTs = cached.maxOfOrNull { it.cachedAt } ?: 0L
 
-    return if (cached.isNotEmpty() && now - freshestTs <= ttlMs) {
-      cached.map { it.toItem() }
+    if (cached.isNotEmpty() && now - freshestTs <= ttlMs) {
+      return cached.map { it.toItem() }
+    }
+
+    val networkItems = fetchSearchFromNetwork(query, page)
+    return if (networkItems != null) {
+      cachedItemDao.clearSearchResults(query)
+      cachedItemDao.insertAll(networkItems.map { it.toCached(page = null, query = query) })
+      networkItems
     } else {
-      val networkItems = fetchSearchFromNetwork(query, page)
-      if (networkItems != null) {
-        cachedItemDao.clearSearchResults(query)
-        cachedItemDao.insertAll(networkItems.map { it.toCached(page = null, query = query) })
-        networkItems
-      } else {
+      if (cached.isNotEmpty()) {
         cached.map { it.toItem() }
+      } else {
+        throw OfflineNoCacheException("No internet and no cached search results for query '$query'")
       }
     }
   }
