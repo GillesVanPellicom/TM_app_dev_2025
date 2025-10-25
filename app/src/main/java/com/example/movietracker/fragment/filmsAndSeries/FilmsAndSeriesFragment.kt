@@ -71,8 +71,10 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
 
     // Restore scroll state if available using new API (API 33+)
     if (savedInstanceState != null) {
-      recyclerViewState = savedInstanceState.getParcelable("RECYCLER_VIEW_STATE", Parcelable::class.java)
-      searchRecyclerViewState = savedInstanceState.getParcelable("SEARCH_RECYCLER_VIEW_STATE", Parcelable::class.java)
+      recyclerViewState =
+        savedInstanceState.getParcelable("RECYCLER_VIEW_STATE", Parcelable::class.java)
+      searchRecyclerViewState =
+        savedInstanceState.getParcelable("SEARCH_RECYCLER_VIEW_STATE", Parcelable::class.java)
     }
 
     // Set up search
@@ -160,7 +162,8 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
       if (viewModel.searchResults.isNotEmpty()) {
         searchAdapter.updateItems(viewModel.searchResults)
         // Restore search recycler view position
-        val searchRecyclerView = binding.searchView.findViewById<RecyclerView>(R.id.searchResultsRecyclerView)
+        val searchRecyclerView =
+          binding.searchView.findViewById<RecyclerView>(R.id.searchResultsRecyclerView)
         searchRecyclerViewState?.let { searchRecyclerView.layoutManager?.onRestoreInstanceState(it) }
       }
     } else {
@@ -197,7 +200,7 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
         viewModel.searchResults.clear()
         viewModel.searchResults.addAll(applyFilters(results))
         searchAdapter.updateItems(viewModel.searchResults)
-      } catch (e: Exception) {
+      } catch (_: Exception) {
         hideLoadingSpinner()
         showErrorDialog()
       }
@@ -230,10 +233,13 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
             val updatedList = ArrayList(applyFilters(viewModel.movies))
             adapter.updateItems(updatedList)
             binding.recyclerView.requestLayout()
-            Log.d("FilmsAndSeriesFragment", "Updated adapter with ${updatedList.size} items (filtered)")
+            Log.d(
+              "FilmsAndSeriesFragment",
+              "Updated adapter with ${updatedList.size} items (filtered)"
+            )
           }
         }
-      } catch (e: Exception) {
+      } catch (_: Exception) {
         hideLoadingSpinner()
         showReloadButton()
         showErrorDialog()
@@ -251,7 +257,8 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
       outState.putParcelable("RECYCLER_VIEW_STATE", recyclerViewState)
 
       // Save search RecyclerView state
-      val searchRecyclerView = binding.searchView.findViewById<RecyclerView>(R.id.searchResultsRecyclerView)
+      val searchRecyclerView =
+        binding.searchView.findViewById<RecyclerView>(R.id.searchResultsRecyclerView)
       searchRecyclerViewState = searchRecyclerView.layoutManager?.onSaveInstanceState()
       outState.putParcelable("SEARCH_RECYCLER_VIEW_STATE", searchRecyclerViewState)
     }
@@ -272,6 +279,7 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
   private fun showErrorDialog() {
     (requireActivity() as? MainActivity)?.showErrorDialog()
   }
+
   private fun applyFilters(source: List<Item>): List<Item> {
     val filteredByType = source.filter { item ->
       when {
