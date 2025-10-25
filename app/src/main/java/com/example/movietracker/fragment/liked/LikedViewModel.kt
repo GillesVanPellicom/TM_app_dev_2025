@@ -13,7 +13,7 @@ class LikedViewModel : ViewModel() {
   var isSearchViewActive: Boolean = false
   var searchResults = mutableListOf<Item>()
 
-  // Filter items based on search query
+  // Filter items based on search searchQuery
   fun filterItems(query: String): List<Item> {
     val lowercaseQuery = query.lowercase()
     return items.filter {

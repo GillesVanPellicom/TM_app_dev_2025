@@ -7,6 +7,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,8 +18,12 @@ import com.example.movietracker.databinding.FragmentFilmsAndSeriesBinding
 import com.example.movietracker.itemList.Item
 import com.example.movietracker.itemList.ItemAdapter
 import com.google.android.material.search.SearchView
+import kotlinx.coroutines.launch
 
 class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
+  private lateinit var repository: com.example.movietracker.repository.MovieRepository
+  private var filterShowMovies: Boolean = true
+  private var filterShowTv: Boolean = true
   private lateinit var binding: FragmentFilmsAndSeriesBinding
   private val viewModel: FilmsAndSeriesViewModel by viewModels()
   private lateinit var adapter: ItemAdapter
@@ -27,8 +32,27 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
   private var searchRecyclerViewState: Parcelable? = null
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    // Init repository for cache-first data access
+    val dao = MainActivity.database.cachedItemDao()
+    repository = com.example.movietracker.repository.MovieRepository(
+      cachedItemDao = dao,
+      service = TmdbService.create(),
+      apiKey = TmdbService.getApiKey()
+    )
     super.onViewCreated(view, savedInstanceState)
     binding = FragmentFilmsAndSeriesBinding.bind(view)
+
+    // Setup RecyclerView first
+
+    // Setup chip filters
+    binding.chipMovies.setOnCheckedChangeListener { _, isChecked ->
+      filterShowMovies = isChecked
+      applyAndRenderFilters()
+    }
+    binding.chipTv.setOnCheckedChangeListener { _, isChecked ->
+      filterShowTv = isChecked
+      applyAndRenderFilters()
+    }
 
     // Setup RecyclerView first
     val layoutManager = LinearLayoutManager(context)
@@ -87,12 +111,12 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
       this@FilmsAndSeriesFragment.searchAdapter = searchAdapter
     }
 
-    // Set up search query listener
+    // Set up search searchQuery listener
     binding.searchView.editText.setOnEditorActionListener { _, actionId, _ ->
       if (actionId == EditorInfo.IME_ACTION_SEARCH) {
         val query = binding.searchView.editText.text.toString()
         if (query.isNotBlank()) {
-          // Save query in ViewModel
+          // Save searchQuery in ViewModel
           viewModel.currentSearchQuery = query
           performSearch(query)
         }
@@ -166,21 +190,18 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
 
   private fun performSearch(query: String) {
     showLoadingSpinner(true)
-    viewModel.searchMoviesOrShows(
-      query, TmdbService.getApiKey(), TmdbService.create(),
-      onSuccess = { searchResults ->
+    viewLifecycleOwner.lifecycleScope.launch {
+      try {
+        val results = repository.search(query)
         hideLoadingSpinner()
-        // Store results in ViewModel for configuration changes
         viewModel.searchResults.clear()
-        viewModel.searchResults.addAll(searchResults)
-        // Update the search adapter with results
-        searchAdapter.updateItems(searchResults)
-      },
-      onFailure = {
+        viewModel.searchResults.addAll(applyFilters(results))
+        searchAdapter.updateItems(viewModel.searchResults)
+      } catch (e: Exception) {
         hideLoadingSpinner()
         showErrorDialog()
       }
-    )
+    }
   }
 
   private fun navigateToItemDetail(selectedItem: Item) {
@@ -197,28 +218,27 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
 
   private fun fetchTrendingMovies() {
     showLoadingSpinner()
-
-    viewModel.fetchTrendingMovies(TmdbService.getApiKey(), TmdbService.create(), { newMovies ->
-      hideLoadingSpinner()
-
-      // Use a handler to ensure the UI update happens after the current frame is drawn
-      binding.recyclerView.post {
-        if (isAdded) {
-          // Create a copy of the list to ensure adapter recognizes it as new data
-          val updatedList = ArrayList(viewModel.movies)
-          adapter.updateItems(updatedList)
-
-          // Request layout to ensure scrolling calculations are updated
-          binding.recyclerView.requestLayout()
-
-          Log.d("FilmsAndSeriesFragment", "Updated adapter with ${viewModel.movies.size} items")
+    viewLifecycleOwner.lifecycleScope.launch {
+      try {
+        val newItems = repository.getTrending(viewModel.currentPage)
+        // Update ViewModel state similar to original
+        viewModel.movies.addAll(newItems)
+        viewModel.currentPage++
+        hideLoadingSpinner()
+        binding.recyclerView.post {
+          if (isAdded) {
+            val updatedList = ArrayList(applyFilters(viewModel.movies))
+            adapter.updateItems(updatedList)
+            binding.recyclerView.requestLayout()
+            Log.d("FilmsAndSeriesFragment", "Updated adapter with ${updatedList.size} items (filtered)")
+          }
         }
+      } catch (e: Exception) {
+        hideLoadingSpinner()
+        showReloadButton()
+        showErrorDialog()
       }
-    }, {
-      hideLoadingSpinner()
-      showReloadButton()
-      showErrorDialog()
-    })
+    }
   }
 
   override fun onSaveInstanceState(outState: Bundle) {
@@ -251,5 +271,27 @@ class FilmsAndSeriesFragment : Fragment(R.layout.fragment_films_and_series) {
 
   private fun showErrorDialog() {
     (requireActivity() as? MainActivity)?.showErrorDialog()
+  }
+  private fun applyFilters(source: List<Item>): List<Item> {
+    val filteredByType = source.filter { item ->
+      when {
+        item.isFilm && filterShowMovies -> true
+        !item.isFilm && filterShowTv -> true
+        else -> false
+      }
+    }
+    return filteredByType
+  }
+
+  private fun applyAndRenderFilters() {
+    if (::adapter.isInitialized) {
+      val listToShow = if (viewModel.isInSearchMode) viewModel.searchResults else viewModel.movies
+      val filtered = applyFilters(listToShow)
+      adapter.updateItems(filtered)
+    }
+    if (::searchAdapter.isInitialized && viewModel.isInSearchMode) {
+      val filteredSearch = applyFilters(viewModel.searchResults)
+      searchAdapter.updateItems(filteredSearch)
+    }
   }
 }

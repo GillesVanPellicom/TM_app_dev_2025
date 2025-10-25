@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string name="app_name">movietracker</string>
 
   <!-- Movie details -->
   <string name="backdrop_image_description">Movie backdrop image</string>
@@ -48,6 +49,8 @@
   <string name="main_reload">Reload</string>
   <string name="home_go_to_home_fragment">Go to home Fragment</string>
   <string name="fas_search_movies_or_series">Search movies or series</string>
+  <string name="movies">Movies</string>
+  <string name="tv_shows">TV shows</string>
 
   <!-- Liked items -->
   <string name="added_to_liked">%1$s added to liked</string>

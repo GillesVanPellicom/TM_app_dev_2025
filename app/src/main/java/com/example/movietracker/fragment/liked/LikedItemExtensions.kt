@@ -8,6 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.movietracker.MainActivity
 import com.example.movietracker.R
 import com.example.movietracker.itemList.Item
+import com.example.movietracker.notifications.NotificationHelper
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
@@ -39,6 +40,7 @@ fun Fragment.toggleLikeStatus(
       fab.setImageResource(newIcon)
 
       showAnchoredSnackbar(rootView, message, existingItem, true, fab, newIcon)
+      NotificationHelper.notifyLiked(requireContext(), title, liked = false)
     } else {
       // Item doesn't exist - add it
       val item = Item(
@@ -54,6 +56,7 @@ fun Fragment.toggleLikeStatus(
       fab.setImageResource(newIcon)
 
       showAnchoredSnackbar(rootView, message, item, false, fab, newIcon)
+      NotificationHelper.notifyLiked(requireContext(), title, liked = true)
     }
   }
 }

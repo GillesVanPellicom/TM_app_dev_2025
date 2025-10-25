@@ -78,7 +78,7 @@ class LikedFragment : Fragment(R.layout.fragment_liked) {
       adapter = searchAdapter
     }
 
-    // Set up search query listener
+    // Set up search searchQuery listener
     binding.searchView.editText.setOnEditorActionListener { _, actionId, _ ->
       if (actionId == EditorInfo.IME_ACTION_SEARCH) {
         val query = binding.searchView.editText.text.toString()

@@ -48,7 +48,8 @@ class MainActivity : AppCompatActivity() {
       applicationContext,
       AppDatabase::class.java,
       "movie-tracker-database"
-    ).build()
+    ).fallbackToDestructiveMigration()
+      .build()
 
     // Handle top padding to take system bar into account
     ViewCompat.setOnApplyWindowInsetsListener(binding.navHostFragment) { view, insets ->
