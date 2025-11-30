@@ -138,6 +138,8 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun requestNotificationPermission() {
+    // Request permissions for notifications
+    // No API check required since android target is 13+
     if (ContextCompat.checkSelfPermission(
         this,
         Manifest.permission.POST_NOTIFICATIONS
