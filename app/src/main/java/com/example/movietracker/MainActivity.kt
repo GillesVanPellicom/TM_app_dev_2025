@@ -1,6 +1,9 @@
 package com.example.movietracker
 
+import android.Manifest
 import android.app.Dialog
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +16,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -32,6 +37,7 @@ class MainActivity : AppCompatActivity() {
 
   private var isErrorDialogShown = false // Flag to prevent multiple error dialogs
 
+  private val NOTIFICATION_PERMISSION_REQUEST_CODE = 101
 
   companion object {
     lateinit var database: AppDatabase
@@ -125,6 +131,37 @@ class MainActivity : AppCompatActivity() {
         }
       } catch (e: Exception) {
         Log.e("MainActivity", "Error handling destination change: ${e.message}")
+      }
+    }
+
+    requestNotificationPermission()
+  }
+
+  private fun requestNotificationPermission() {
+    if (ContextCompat.checkSelfPermission(
+        this,
+        Manifest.permission.POST_NOTIFICATIONS
+      ) != PackageManager.PERMISSION_GRANTED
+    ) {
+      ActivityCompat.requestPermissions(
+        this,
+        arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+        NOTIFICATION_PERMISSION_REQUEST_CODE
+      )
+    }
+  }
+
+  override fun onRequestPermissionsResult(
+    requestCode: Int,
+    permissions: Array<out String>,
+    grantResults: IntArray
+  ) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    if (requestCode == NOTIFICATION_PERMISSION_REQUEST_CODE) {
+      if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        Log.d("MainActivity", "POST_NOTIFICATIONS permission granted")
+      } else {
+        Log.w("MainActivity", "POST_NOTIFICATIONS permission denied")
       }
     }
   }
