@@ -14,6 +14,7 @@ import com.example.movietracker.api.MovieResponse
 import com.example.movietracker.api.TmdbService
 import com.example.movietracker.databinding.FragmentInspectMovieBinding
 import com.example.movietracker.fragment.liked.toggleLikeStatus
+import com.example.movietracker.ui.scheduleFabWiggle
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -74,6 +75,9 @@ class InspectMovieFragment : Fragment(R.layout.fragment_inspect_movie) {
         )
       }
     }
+
+    // Nudge the FAB after 30s to hint its presence
+    scheduleFabWiggle(binding.fabLikedMovie, initialDelayMs = 30_000L)
   }
 
   private fun checkIfMovieIsLiked(movieId: Int?) {
